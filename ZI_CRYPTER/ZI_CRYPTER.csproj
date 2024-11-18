@@ -8,4 +8,14 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="locked.png" />
+    <None Remove="unlocked.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="locked.png" />
+    <Resource Include="unlocked.png" />
+  </ItemGroup>
+
 </Project>

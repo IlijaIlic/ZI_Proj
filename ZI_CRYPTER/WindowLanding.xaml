@@ -37,7 +37,7 @@
             </Button.Template>
             <Button.Effect>
                 <DropShadowEffect/>
-            </Button.Effect> Pokreni
+            </Button.Effect> POKRENI
         </Button>
         <Button x:Name="XButton" Height="40" Width="40" Margin="750,0,0,400" HorizontalAlignment="Left" VerticalAlignment="Bottom" OpacityMask="Black" Background="{x:Null}" Foreground="White" FontFamily="Franklin Gothic Heavy" FontSize="24" BorderBrush="{x:Null}">
             <Button.Template>
