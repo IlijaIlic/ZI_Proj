@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="CRYPTER" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
     <Grid>
-        <Rectangle RadiusX="20" RadiusY="20">
+        <Rectangle RadiusX="20" RadiusY="20" Height="450" VerticalAlignment="Bottom">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
                     <GradientStop Color="#FF2D2D2D" Offset="0.0" />
@@ -15,7 +15,9 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Button Height="100" Width="150" FontFamily="Franklin Gothic Heavy" FontSize="24" Click="Button_Click" Background="#FFFFAB25" Foreground="White" >
+        <TextBlock 
+    Text="ZI CRYPTER" TextWrapping="Wrap" TextAlignment="Center" Margin="286,74,286,230" Foreground="White" FontSize="48" FontFamily="Franklin Gothic Heavy" />
+        <Button Height="100" Width="150" FontFamily="Franklin Gothic Heavy" FontSize="24" Click="Button_Click" Background="#FFFFAB25" Foreground="White" Margin="325,225,325,125" >
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="20">
@@ -39,7 +41,7 @@
                 <DropShadowEffect/>
             </Button.Effect> POKRENI
         </Button>
-        <Button x:Name="XButton" Height="40" Width="40" Margin="750,0,0,400" HorizontalAlignment="Left" VerticalAlignment="Bottom" OpacityMask="Black" Background="{x:Null}" Foreground="White" FontFamily="Franklin Gothic Heavy" FontSize="24" BorderBrush="{x:Null}">
+        <Button x:Name="XButton" Margin="750,10,0,400" OpacityMask="Black" Background="{x:Null}" Foreground="White" FontFamily="Franklin Gothic Heavy" FontSize="24" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="40">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}"

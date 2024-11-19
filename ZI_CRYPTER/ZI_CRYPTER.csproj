@@ -9,12 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="exit.png" />
     <None Remove="locked.png" />
+    <None Remove="send.png" />
     <None Remove="unlocked.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="exit.png" />
     <Resource Include="locked.png" />
+    <Resource Include="send.png" />
     <Resource Include="unlocked.png" />
   </ItemGroup>
 
