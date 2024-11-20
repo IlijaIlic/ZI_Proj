@@ -7,7 +7,32 @@
         mc:Ignorable="d"
         Title="CRYPTER" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
     <Grid>
-        <Rectangle RadiusX="20" RadiusY="20" Height="450" VerticalAlignment="Bottom">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Rectangle RadiusX="20" 
+                   RadiusY="20" 
+                   Grid.ColumnSpan="6"
+                   Grid.RowSpan="12">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
                     <GradientStop Color="#FF2D2D2D" Offset="0.0" />
@@ -15,9 +40,21 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <TextBlock 
-    Text="ZI CRYPTER" TextWrapping="Wrap" TextAlignment="Center" Margin="286,74,286,230" Foreground="White" FontSize="48" FontFamily="Franklin Gothic Heavy" />
-        <Button Height="100" Width="150" FontFamily="Franklin Gothic Heavy" FontSize="24" Click="Button_Click" Background="#FFFFAB25" Foreground="White" Margin="325,225,325,125" >
+        <TextBlock Text="ZI CRYPTER" 
+                   TextWrapping="Wrap" 
+                   TextAlignment="Center" 
+                   Foreground="White" 
+                   FontSize="48" 
+                   Grid.Row="2" Grid.RowSpan="2"
+                   Grid.Column="1" Grid.ColumnSpan="4"
+                   FontFamily="Franklin Gothic Heavy" />
+        <Button Grid.Column="2" Grid.ColumnSpan="2"
+                Grid.Row="6" Grid.RowSpan="2"
+                FontFamily="Franklin Gothic Heavy" 
+                FontSize="24" 
+                Click="Button_Click" 
+                Background="#FFFFAB25" 
+                Foreground="White"  >
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="20">
@@ -41,31 +78,17 @@
                 <DropShadowEffect/>
             </Button.Effect> POKRENI
         </Button>
-        <Button x:Name="XButton" Margin="750,10,0,400" OpacityMask="Black" Background="{x:Null}" Foreground="White" FontFamily="Franklin Gothic Heavy" FontSize="24" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="40">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" Background="{TemplateBinding Background}"
-                    BorderBrush="{TemplateBinding BorderBrush}" 
-                    BorderThickness="0" CornerRadius="20">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FFFF8500" Offset="0.0" />
-                                        <GradientStop Color="#FFFFAB25" Offset="1.0"/>
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="Foreground" Value="White"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-            X
-        </Button>
-
+        <Button x:Name="XButton" 
+        VerticalAlignment="Bottom" 
+        OpacityMask="Black" 
+        Background="{x:Null}"
+        Foreground="White" 
+        FontFamily="Franklin Gothic Heavy" 
+        FontSize="24" BorderBrush="{x:Null}"
+        Grid.Row="0" Grid.RowSpan="1"
+        Grid.Column="5" Grid.ColumnSpan="1"
+        Margin="90,0,0,0" Height="30" 
+        HorizontalAlignment="Left" Width="30" RenderTransformOrigin="1.228,-0.037">
+            X</Button>
     </Grid>
 </Window>
