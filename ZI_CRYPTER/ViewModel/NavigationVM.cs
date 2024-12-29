@@ -5,12 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using ZI_CRYPTER.Utils;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 namespace ZI_CRYPTER.ViewModel
 {
     class NavigationVM : Utils.ViewModelBase
     {
         private object _currentView;
+
+        public ObservableCollection<ViewModelBase> Tabs { get; }
 
         public object CurrentView
         {
@@ -23,19 +26,29 @@ namespace ZI_CRYPTER.ViewModel
         public ICommand PosaljiCommand { get; set; }
         public ICommand PostavkeCommand { get; set; }
 
-        private void Dekodiraj(object obj) => CurrentView = new DekodirajVM();
+        private void Dekodiraj(object obj)
+        {
+            var dekodirajVm = new DekodirajVM(App.ViewModelBaseInstance);
+
+            CurrentView = dekodirajVm;
+        }
+
         private void Kodiraj(object obj) => CurrentView = new KodirajVM();
         private void Posalji(object obj) => CurrentView = new PosaljiVM();
         private void Postavke(object obj) => CurrentView = new SettingsVM();
 
         public NavigationVM()
         {
+
+            Tabs = new ObservableCollection<ViewModelBase>();
+
             DekodirajCommand = new RelayCommand(Dekodiraj);
             KodirajCommand = new RelayCommand(Kodiraj);
             PosaljiCommand = new RelayCommand(Posalji);
             PostavkeCommand = new RelayCommand(Postavke);
 
             CurrentView = new KodirajVM();
+
         }
     }
 }

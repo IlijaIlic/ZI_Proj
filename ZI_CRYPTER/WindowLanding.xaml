@@ -88,7 +88,31 @@
         Grid.Row="0" Grid.RowSpan="1"
         Grid.Column="5" Grid.ColumnSpan="1"
         Margin="90,0,0,0" Height="30" 
-        HorizontalAlignment="Left" Width="30" RenderTransformOrigin="1.228,-0.037">
-            X</Button>
+        HorizontalAlignment="Left" Width="30" RenderTransformOrigin="1.228,-0.037"
+        Click="CloseApplicationButton_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}"
+         BorderBrush="{TemplateBinding BorderBrush}" 
+         BorderThickness="0" CornerRadius="20">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#FFFF8500" Offset="0.0" />
+                                        <GradientStop Color="#FFFFAB25" Offset="1.0"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            X
+        </Button>
     </Grid>
 </Window>

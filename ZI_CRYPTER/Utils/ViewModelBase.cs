@@ -10,6 +10,19 @@ namespace ZI_CRYPTER.Utils
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
+
+        private string _decodeOutputPutanja;
+
+        public string SharedDecodeOutputPutanja
+        {
+            get => _decodeOutputPutanja;
+            set
+            {
+                _decodeOutputPutanja = value;
+                OnProprtyChanged(nameof(SharedDecodeOutputPutanja));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void OnProprtyChanged([CallerMemberName] string propName = null)

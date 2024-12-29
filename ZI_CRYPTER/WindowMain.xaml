@@ -7,8 +7,8 @@
         xmlns:vm="clr-namespace:ZI_CRYPTER.ViewModel"
         mc:Ignorable="d"
         Title="WindowMain"  
-        Height="450" 
-        Width="800" 
+        Height="675" 
+        Width="1200" 
         WindowStartupLocation="CenterScreen" 
         WindowStyle="None" 
         AllowsTransparency="True" Background="{x:Null}">
@@ -68,7 +68,7 @@
                    HorizontalAlignment="Center"
                    Margin="10,20,0,0" 
                    Foreground="White" 
-                   FontSize="48"
+                   FontSize="80"
                    FontFamily="Franklin Gothic Heavy" 
                    Grid.RowSpan="4"
                    Grid.ColumnSpan="2"/>
@@ -102,7 +102,7 @@
                 </ControlTemplate>
             </Button.Template>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Kodiraj" VerticalAlignment="Center" />
+                <TextBlock Text="Kodiraj" VerticalAlignment="Center" FontSize="20"/>
                 <Image Source="/locked.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
@@ -135,7 +135,7 @@
                 </ControlTemplate>
             </Button.Template>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Dekodiraj" VerticalAlignment="Center" />
+                <TextBlock Text="Dekodiraj" VerticalAlignment="Center" FontSize="20"/>
                 <Image Source="/unlocked.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
@@ -168,7 +168,7 @@
                 </ControlTemplate>
             </Button.Template>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Posalji" VerticalAlignment="Center" />
+                <TextBlock Text="Posalji" VerticalAlignment="Center" FontSize="20"/>
                 <Image Source="/send.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
@@ -201,17 +201,19 @@
                 </ControlTemplate>
             </Button.Template>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Postavke" VerticalAlignment="Center" />
+                <TextBlock Text="Postavke" VerticalAlignment="Center" FontSize="20"/>
                 <Image Source="/settings.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
 
+        <!--Zatvori BUTTON-->
         <Button  Grid.Row="10"
                  Grid.ColumnSpan="2"
                  Background="{x:Null}" 
                  BorderBrush="#FF282828" 
                  FontFamily="Franklin Gothic Heavy" 
-                 Foreground="White">
+                 Foreground="White"
+                 Click="CloseApplicationButton_Click">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="borderClose" Background="{TemplateBinding Background}"
@@ -232,10 +234,12 @@ BorderThickness="0,1,0,1" >
                 </ControlTemplate>
             </Button.Template>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Zatvori" VerticalAlignment="Center" />
+                <TextBlock Text="Zatvori" VerticalAlignment="Center" FontSize="20" />
                 <Image Source="/exit.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
+
+        <!--X BUTTON-->
         <Button x:Name="XButton" 
                 VerticalAlignment="Bottom" 
                 OpacityMask="Black" 
@@ -245,8 +249,9 @@ BorderThickness="0,1,0,1" >
                 FontSize="24" BorderBrush="{x:Null}"
                 Grid.Row="0" Grid.RowSpan="1"
                 Grid.Column="5" Grid.ColumnSpan="1"
-                Margin="90,0,0,0" Height="30" 
-                HorizontalAlignment="Left" Width="30" RenderTransformOrigin="1.228,-0.037">
+                Margin="165,0,0,20" Height="30" 
+                HorizontalAlignment="Left" Width="30" RenderTransformOrigin="1.228,-0.037"
+                Click="CloseApplicationButton_Click">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border" Background="{TemplateBinding Background}"

@@ -27,5 +27,10 @@ namespace ZI_CRYPTER
             objWindMain.Show();
             this.Visibility = Visibility.Hidden;
         }
+
+        private void CloseApplicationButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

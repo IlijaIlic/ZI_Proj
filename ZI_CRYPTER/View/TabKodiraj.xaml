@@ -126,7 +126,7 @@
                    TextAlignment="Center" 
                    HorizontalAlignment="Center" 
                    Foreground="White" 
-                   FontSize="20" 
+                   FontSize="30" 
                    FontFamily="Franklin Gothic Heavy"
                    Grid.RowSpan="2"
                    Grid.ColumnSpan="2" Grid.Column="2"
@@ -151,7 +151,8 @@
                 Background="White" 
                 Foreground="#FFFF9400" BorderBrush="{x:Null}"
                 Grid.Row="10" Grid.ColumnSpan="2"
-                Grid.Column="4">
+                Grid.Column="4"
+                Width="200">
             
             <Button.Template>
                 <ControlTemplate TargetType="Button">

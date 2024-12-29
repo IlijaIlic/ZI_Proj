@@ -28,5 +28,10 @@ namespace ZI_CRYPTER
         {
 
         }
+
+        private void CloseApplicationButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

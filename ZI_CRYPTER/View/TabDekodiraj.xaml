@@ -7,9 +7,6 @@
              xmlns:vm ="clr-namespace:ZI_CRYPTER.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext>
-        <vm:DekodirajVM/>
-    </UserControl.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -52,28 +49,45 @@
 
         </Rectangle>
 
-        <TextBlock HorizontalAlignment="Center"
-                   Text="C://Ilija/Desktop/OutputFolder" 
+
+        <TextBlock  Grid.Column="0" Grid.Row="2"
+                    Margin="0,0,20,20"
+                    Text="Output lokacija: " 
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
                    Foreground="White" 
                    FontFamily="Franklin Gothic Heavy"
-                   Grid.Column="1" Grid.ColumnSpan="4" 
-                   Grid.Row="2"
-                   FontSize="15"/>
+                    TextWrapping="Wrap" />
 
+        <Rectangle Grid.Column="1" 
+                   Grid.ColumnSpan="4" Grid.Row="2"
+                   Margin="-10,-5,-10,15"
+                   Fill="#FF2D2D2D"
+                   RadiusX="10" RadiusY="10" >
+            
+        </Rectangle>
+        
+        <Viewbox HorizontalAlignment="Left" Grid.Column="1" 
+                 Grid.ColumnSpan="4" Grid.Row="2"
+                 Margin="0,0,0,22">
+
+            <TextBlock Text="{Binding DecodeOutput}" 
+                   Foreground="White" 
+                   FontFamily="Franklin Gothic Heavy"
+                   TextWrapping="Wrap" />
+        </Viewbox>
+        
         <Rectangle Fill="White" 
            RadiusX="20" 
            RadiusY="20" 
-           Margin="0,30"
-           Grid.Row="2" Grid.RowSpan="8"
+           Margin="0,40,0,35"
+           Grid.Row="2" Grid.RowSpan="4"
            Grid.ColumnSpan="4" Grid.Column="1"/>
 
-        <ScrollViewer Grid.Row="2" Grid.RowSpan="8"
-              Grid.ColumnSpan="4" Grid.Column="1"
-              Margin="0,30"
-              HorizontalScrollBarVisibility="Auto" 
-              VerticalScrollBarVisibility="Auto"
-              >
-            <Grid>
+
+        <Grid Margin="0,40,0,35"
+              Grid.Row="2" Grid.RowSpan="4"
+              Grid.ColumnSpan="4" Grid.Column="1">
                 <!-- Your actual content goes here -->
                 <StackPanel Margin="10">
                     <!-- Example items -->
@@ -100,24 +114,16 @@
                             </ControlTemplate>
                         </Button.Template>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBlock Text="Dodaj Nove Fajlove" VerticalAlignment="Center" />
+                            <TextBlock Text="Izaberi fajl za dekodiranje" VerticalAlignment="Center" />
                             <Image Source="/upload.png" Width="16" Height="16" Margin="5,0,0,0"/>
                         </StackPanel>
                     </Button>
-                    <TextBlock Text="File 1" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 2" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 3" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 4" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 5" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 6" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 7" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 8" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 9" Margin="10" Foreground="Black"/>
-                </StackPanel>
-            </Grid>
-        </ScrollViewer>
+                    <TextBlock Text="File 1" Margin="10" Foreground="Black" />
 
-        <StackPanel Orientation="Horizontal" 
+                </StackPanel>
+        </Grid>
+
+            <StackPanel Orientation="Horizontal" 
                     Grid.Row="10" 
                     Grid.Column="0" 
                     Grid.ColumnSpan="3">
@@ -126,7 +132,8 @@
                     Foreground="White" BorderBrush="{x:Null}"
                     Margin="40,0,10,0"
                     HorizontalAlignment="Left"
-                    Width="200">
+                    Width="200"
+                    Command="{Binding ChooseOutputLocationCommand}">
 
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
@@ -163,7 +170,7 @@
                TextAlignment="Center" 
                HorizontalAlignment="Center" 
                Foreground="White" 
-               FontSize="20" 
+               FontSize="30" 
                FontFamily="Franklin Gothic Heavy"
                Grid.RowSpan="2"
                Grid.ColumnSpan="2" Grid.Column="2"
@@ -175,7 +182,8 @@
              Background="White" 
              Foreground="#FFFF9400" BorderBrush="{x:Null}"
              Grid.Row="10" Grid.ColumnSpan="2"
-             Grid.Column="4">
+             Grid.Column="4"
+             Width="200">
 
             <Button.Template>
                 <ControlTemplate TargetType="Button">
