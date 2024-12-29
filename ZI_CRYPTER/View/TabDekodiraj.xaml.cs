@@ -10,23 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ZI_CRYPTER
+namespace ZI_CRYPTER.View
 {
     /// <summary>
-    /// Interaction logic for WindowMain.xaml
+    /// Interaction logic for TabDekodiraj.xaml
     /// </summary>
-    public partial class WindowMain : Window
+    public partial class TabDekodiraj : UserControl
     {
-        public WindowMain()
+        public TabDekodiraj()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

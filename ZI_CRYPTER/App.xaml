@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:ZI_CRYPTER"
              StartupUri="WindowLanding.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Utils/DataTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

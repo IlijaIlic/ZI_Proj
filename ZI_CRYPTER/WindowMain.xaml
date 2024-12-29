@@ -4,8 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZI_CRYPTER"
+        xmlns:vm="clr-namespace:ZI_CRYPTER.ViewModel"
         mc:Ignorable="d"
-        Title="WindowMain"  Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowStyle="None" AllowsTransparency="True" Background="{x:Null}">
+        Title="WindowMain"  
+        Height="450" 
+        Width="800" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="None" 
+        AllowsTransparency="True" Background="{x:Null}">
+
+    <Window.DataContext>
+        <vm:NavigationVM />
+    </Window.DataContext>
+    
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -51,25 +62,6 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Rectangle Grid.Column="2" Grid.ColumnSpan="4" 
-                   Grid.Row="2" Grid.RowSpan="9"  
-                   RadiusX="20"  RadiusY="20" Margin="10" >
-            <Rectangle.Fill>
-                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
-                    <GradientStop Color="DarkOrange" Offset="0.0" />
-                    <GradientStop Color="Orange" Offset="0.9"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <TextBlock Text="Fajlovi" 
-                   TextWrapping="Wrap" 
-                   TextAlignment="Center" 
-                   HorizontalAlignment="Center" 
-                   Foreground="White" 
-                   FontSize="20" 
-                   FontFamily="Franklin Gothic Heavy" 
-                   Grid.Column="2" Grid.ColumnSpan="1"
-                   Grid.Row="3" Grid.RowSpan="1" />
         <TextBlock Text="ZI CRYPTER" 
                    TextWrapping="Wrap" 
                    TextAlignment="Center" 
@@ -80,18 +72,21 @@
                    FontFamily="Franklin Gothic Heavy" 
                    Grid.RowSpan="4"
                    Grid.ColumnSpan="2"/>
+        <!--KODIRAJ BUTTON-->
         <Button BorderThickness="0,1,0,1" 
                 Grid.Row="4"
                 Grid.ColumnSpan="2"
-                Background="{x:Null}" 
                 BorderBrush="#FF282828" 
                 Foreground="White" 
-                FontFamily="Franklin Gothic Heavy">
+                FontFamily="Franklin Gothic Heavy"
+                Command="{Binding KodirajCommand}"
+                Background="Transparent">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="borderCrypt" Background="{TemplateBinding Background}"
-     BorderBrush="{TemplateBinding BorderBrush}" 
-     BorderThickness="0,1,0,1" >
+                    <Border x:Name="borderCrypt" 
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="0,1,0,1" >
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -107,21 +102,24 @@
                 </ControlTemplate>
             </Button.Template>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Kriptuj" VerticalAlignment="Center" />
+                <TextBlock Text="Kodiraj" VerticalAlignment="Center" />
                 <Image Source="/locked.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
+        
+        <!--DEKODIRAJ BUTTON-->
         <Button  Grid.Row="5" 
                  Grid.ColumnSpan="2"
-                 Background="{x:Null}" 
+                 Background="Transparent"
                  BorderBrush="#FF282828" 
                  FontFamily="Franklin Gothic Heavy" 
-                 Foreground="White">
+                 Foreground="White" Click="Button_Click"
+                 Command="{Binding DekodirajCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="borderEnc" Background="{TemplateBinding Background}"
-BorderBrush="{TemplateBinding BorderBrush}" 
-BorderThickness="0,0,0,1" >
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="0,0,0,1" >
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -137,21 +135,24 @@ BorderThickness="0,0,0,1" >
                 </ControlTemplate>
             </Button.Template>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Enktripuj" VerticalAlignment="Center" />
+                <TextBlock Text="Dekodiraj" VerticalAlignment="Center" />
                 <Image Source="/unlocked.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
+        
+        <!--POSALJI BUTTON-->
         <Button  Grid.Row="6" 
                  Grid.ColumnSpan="2"
-                 Background="{x:Null}"
+                 Background="Transparent"                 
                  BorderBrush="#FF282828"
                  FontFamily="Franklin Gothic Heavy"
-                 Foreground="White">
+                 Foreground="White"
+                 Command="{Binding PosaljiCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="borderSend" Background="{TemplateBinding Background}"
-BorderBrush="{TemplateBinding BorderBrush}" 
-BorderThickness="0,0,0,1" >
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="0,0,0,1" >
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -171,6 +172,40 @@ BorderThickness="0,0,0,1" >
                 <Image Source="/send.png" Width="16" Height="16" Margin="5,0,0,0"/>
             </StackPanel>
         </Button>
+
+        <!--Postavke BUTTON-->
+        <Button  Grid.Row="7" 
+           Grid.ColumnSpan="2"
+           Background="Transparent"                 
+           BorderBrush="#FF282828"
+           FontFamily="Franklin Gothic Heavy"
+           Foreground="White"
+           Command="{Binding PostavkeCommand}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="borderSend" Background="{TemplateBinding Background}"
+                      BorderBrush="{TemplateBinding BorderBrush}" 
+                      BorderThickness="0,0,0,1" >
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="borderSend" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FFFF4D2F" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Postavke" VerticalAlignment="Center" />
+                <Image Source="/settings.png" Width="16" Height="16" Margin="5,0,0,0"/>
+            </StackPanel>
+        </Button>
+
         <Button  Grid.Row="10"
                  Grid.ColumnSpan="2"
                  Background="{x:Null}" 
@@ -236,48 +271,13 @@ BorderThickness="0,1,0,1" >
             </Button.Template>
             X
         </Button>
-        <StackPanel Orientation="Horizontal" 
-                    Grid.Row="9" 
-                    Grid.Column="2" Grid.ColumnSpan="2"
-                    Margin="30,10,0,0">
-            <TextBlock Text="File System Watcher" 
-                       FontFamily="Franklin Gothic Heavy" 
-                       Foreground="White"/>
-            <CheckBox Margin="10,0,0,0" Background="White" Foreground="#FFFF9300"></CheckBox>
-        </StackPanel>
-        <Button Content="Kriptuj"
-        Grid.Column="5"
-        Grid.Row="9"
-        Margin="10,0,20,0" 
-        FontFamily="Franklin Gothic Heavy" 
-        Background="White" 
-        Foreground="#FFFF9400" BorderBrush="{x:Null}">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" 
-                    Background="{TemplateBinding Background}" 
-                    BorderBrush="{TemplateBinding BorderBrush}" 
-                    BorderThickness="1" CornerRadius="20">
-                        <ContentPresenter x:Name="contentPresenter" 
-                                  HorizontalAlignment="Center" 
-                                  VerticalAlignment="Center" 
-                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <!-- Trigger for hover background -->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background">
-                                <Setter.Value>
-                                    <SolidColorBrush Color="#FF838282" />
-                                </Setter.Value>
-                            </Setter>
-                            <!-- Trigger for hover text color -->
-                            <Setter  Property="Foreground" Value="#FF4CAF50"/>
-                            <!-- Change this to desired hover color -->
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+
+        <Grid Grid.Column="2" Grid.ColumnSpan="5"
+              Grid.Row="1" Grid.RowSpan="10"
+              Margin="10">
+            <ContentControl x:Name="Pages"
+                            Content="{Binding CurrentView}" />
+        </Grid>
+       
     </Grid>
 </Window>

@@ -10,16 +10,27 @@
 
   <ItemGroup>
     <None Remove="exit.png" />
+    <None Remove="folder.png" />
     <None Remove="locked.png" />
     <None Remove="send.png" />
+    <None Remove="settings.png" />
     <None Remove="unlocked.png" />
+    <None Remove="upload.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="exit.png" />
+    <Resource Include="folder.png" />
     <Resource Include="locked.png" />
     <Resource Include="send.png" />
+    <Resource Include="settings.png" />
     <Resource Include="unlocked.png" />
+    <Resource Include="upload.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Target\" />
+    <Folder Include="X\" />
   </ItemGroup>
 
 </Project>
