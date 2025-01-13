@@ -104,8 +104,31 @@ namespace ZI_CRYPTER.ViewModel
             }
             else
             {
-                WindowInfoAlert wia = new WindowInfoAlert("💥💥💥");
-                wia.ShowDialog();
+
+                if (CodeAlg == "XTEA")
+                {
+                    
+                    byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
+
+                    if (FSWCheck)
+                    {
+                        foreach (var file in FilesToCode)
+                        {
+                            XTEA.EncryptFile(String.Concat(ViewModelBase.SharedFSWPath, file), String.Concat(ViewModelBase.SharedFSWPath, String.Concat("enc - ",file)), keyBytes);
+                        }
+                        WindowInfoAlert wia = new WindowInfoAlert("💥💥💥");
+                        wia.ShowDialog();
+                    }
+                    else
+                    {
+                        foreach (var file in FilesToCode)
+                        {
+                            XTEA.EncryptFile( file, String.Concat(ViewModelBase.SharedFSWPath, String.Concat("enc - ", Path.GetFileName(file))), keyBytes);
+                        }
+                        WindowInfoAlert wia = new WindowInfoAlert("💥💥💥");
+                        wia.ShowDialog();
+                    }
+                }
             }
         }
 

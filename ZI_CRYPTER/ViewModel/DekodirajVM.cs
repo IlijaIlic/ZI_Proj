@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Printing.IndexedProperties;
 using System.Runtime.InteropServices.Marshalling;
@@ -103,10 +104,15 @@ namespace ZI_CRYPTER.ViewModel
                 wia3.ShowDialog();
                 return;
             }
-           
-            WindowInfoAlert wia = new WindowInfoAlert("DEKODIRANO ! ! !");
-            wia.ShowDialog(); 
             
+            if(DecodeAlg == "XTEA")
+            {
+                byte[] keyByte = Encoding.ASCII.GetBytes(DecodeKey);
+                XTEA.DecryptFile(FileToDecode[0], String.Concat(String.Concat(DecodeOutput,"\\") , Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
+        
+            }
+            WindowInfoAlert wia = new WindowInfoAlert("💥💥💥");
+            wia.ShowDialog();
         }
         private void ChangeOutputLocation(object parameter)
         {
