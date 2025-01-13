@@ -11,28 +11,24 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using ZI_CRYPTER.ViewModel;
 
 namespace ZI_CRYPTER
 {
     /// <summary>
-    /// Interaction logic for WindowMain.xaml
+    /// Interaction logic for WindowInfoAlert.xaml
     /// </summary>
-    public partial class WindowMain : Window
+    public partial class WindowInfoAlert : Window
     {
-        public WindowMain()
+        public WindowInfoAlert(string message)
         {
             InitializeComponent();
+            InfoText.Text = message;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CloseWindowButton_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void CloseApplicationButton_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
+            this.Close();
         }
     }
+
 }

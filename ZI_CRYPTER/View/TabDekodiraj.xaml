@@ -1,12 +1,23 @@
-﻿<UserControl x:Class="ZI_CRYPTER.View.TabDekodiraj"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ZI_CRYPTER.View"
-             xmlns:vm ="clr-namespace:ZI_CRYPTER.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="ZI_CRYPTER.View.TabDekodiraj"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ZI_CRYPTER.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="[vm ]clr-namespace:ZI_CRYPTER.ViewModel"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles/TextBox.xaml" />
+                <ResourceDictionary Source="../Styles/ComboBox.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -31,17 +42,18 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.ColumnSpan="6"
-               Grid.RowSpan="12"
-                   RadiusX="20" 
-                   RadiusY="20">
+        <Rectangle
+            Grid.RowSpan="12"
+            Grid.ColumnSpan="6"
+            RadiusX="20"
+            RadiusY="20">
 
             <Rectangle.Fill>
 
                 <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
 
-                    <GradientStop Color="DarkOrange" Offset="0.0" />
-                    <GradientStop Color="Orange" Offset="0.9"/>
+                    <GradientStop Offset="0.0" Color="DarkOrange" />
+                    <GradientStop Offset="0.9" Color="Orange" />
 
                 </LinearGradientBrush>
 
@@ -50,151 +62,49 @@
         </Rectangle>
 
 
-        <TextBlock  Grid.Column="0" Grid.Row="2"
-                    Margin="0,0,20,20"
-                    Text="Output lokacija: " 
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                   Foreground="White" 
-                   FontFamily="Franklin Gothic Heavy"
-                    TextWrapping="Wrap" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="0,0,20,20"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="White"
+            Text="Output lokacija: "
+            TextWrapping="Wrap" />
 
-        <Rectangle Grid.Column="1" 
-                   Grid.ColumnSpan="4" Grid.Row="2"
-                   Margin="-10,-5,-10,15"
-                   Fill="#FF2D2D2D"
-                   RadiusX="10" RadiusY="10" >
-            
-        </Rectangle>
-        
-        <Viewbox HorizontalAlignment="Left" Grid.Column="1" 
-                 Grid.ColumnSpan="4" Grid.Row="2"
-                 Margin="0,0,0,22">
-
-            <TextBlock Text="{Binding DecodeOutput}" 
-                   Foreground="White" 
-                   FontFamily="Franklin Gothic Heavy"
-                   TextWrapping="Wrap" />
-        </Viewbox>
-        
-        <Rectangle Fill="White" 
-           RadiusX="20" 
-           RadiusY="20" 
-           Margin="0,40,0,35"
-           Grid.Row="2" Grid.RowSpan="4"
-           Grid.ColumnSpan="4" Grid.Column="1"/>
+        <Rectangle
+            Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="-10,-5,-10,15"
+            Fill="Transparent"
+            RadiusX="10"
+            RadiusY="10" />
 
 
-        <Grid Margin="0,40,0,35"
-              Grid.Row="2" Grid.RowSpan="4"
-              Grid.ColumnSpan="4" Grid.Column="1">
-                <!-- Your actual content goes here -->
-                <StackPanel Margin="10">
-                    <!-- Example items -->
-                    <Button  Background="Orange" 
-                     FontFamily="Franklin Gothic Heavy" 
-                     Foreground="White"
-                     Height="30">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="borderEnc" Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="8" >
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="borderEnc" Property="Background">
-                                            <Setter.Value>
-                                                <SolidColorBrush Color="#FFFF4D2F" />
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBlock Text="Izaberi fajl za dekodiranje" VerticalAlignment="Center" />
-                            <Image Source="/upload.png" Width="16" Height="16" Margin="5,0,0,0"/>
-                        </StackPanel>
-                    </Button>
-                    <TextBlock Text="File 1" Margin="10" Foreground="Black" />
-
-                </StackPanel>
-        </Grid>
-
-            <StackPanel Orientation="Horizontal" 
-                    Grid.Row="10" 
-                    Grid.Column="0" 
-                    Grid.ColumnSpan="3">
-            <Button FontFamily="Franklin Gothic Heavy" 
-                    Background="#FF2D2D2D" 
-                    Foreground="White" BorderBrush="{x:Null}"
-                    Margin="40,0,10,0"
-                    HorizontalAlignment="Left"
-                    Width="200"
-                    Command="{Binding ChooseOutputLocationCommand}">
-
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="border" 
-                    Background="{TemplateBinding Background}" 
-                    BorderBrush="{TemplateBinding BorderBrush}" 
-                    BorderThickness="1" CornerRadius="10">
-                            <ContentPresenter x:Name="contentPresenter" 
-                                  HorizontalAlignment="Center" 
-                                  VerticalAlignment="Center" 
-                                  TextElement.Foreground="{TemplateBinding Foreground}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="#FFFF4D2F" />
-                                    </Setter.Value>
-                                </Setter>
-                                <Setter  Property="Foreground" Value="#FF4CAF50"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Text="Promeni output lokaciju" VerticalAlignment="Center" />
-                    <Image Source="/folder.png" Width="16" Height="16" Margin="5,0,0,0"/>
-                </StackPanel>
-            </Button>
-
-        </StackPanel>
-        <TextBlock Text="DEKODIRAJ" 
-               TextWrapping="Wrap" 
-               TextAlignment="Center" 
-               HorizontalAlignment="Center" 
-               Foreground="White" 
-               FontSize="30" 
-               FontFamily="Franklin Gothic Heavy"
-               Grid.RowSpan="2"
-               Grid.ColumnSpan="2" Grid.Column="2"
-               Margin="0, 10, 0, 0"/>
-
-        <Button Content="Dekodiraj"
-             Margin="10,0,20,0" 
-             FontFamily="Franklin Gothic Heavy" 
-             Background="White" 
-             Foreground="#FFFF9400" BorderBrush="{x:Null}"
-             Grid.Row="10" Grid.ColumnSpan="2"
-             Grid.Column="4"
-             Width="200">
-
+        <Button
+            Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="-10,-5,-10,15"
+            Background="#FF2D2D2D"
+            BorderBrush="Transparent"
+            Command="{Binding ChooseOutputLocationCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" 
-                        Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="1" CornerRadius="10">
-                        <ContentPresenter x:Name="contentPresenter" 
-                                      HorizontalAlignment="Center" 
-                                      VerticalAlignment="Center" 
-                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            Margin="5,0,5,2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -203,7 +113,245 @@
                                     <SolidColorBrush Color="#FFFF4D2F" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter  Property="Foreground" Value="#FF4CAF50"/>
+                            <Setter Property="Foreground" Value="#FF4CAF50" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+                <TextBlock
+                    FontFamily="Franklin Gothic Heavy"
+                    Foreground="White"
+                    Text="{Binding DecodeOutput}"
+                    TextWrapping="Wrap" />
+
+            </Viewbox>
+        </Button>
+
+
+        <!--
+        <Button
+            Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="-10,-5,-10,15"
+            HorizontalAlignment="Left"
+            Background="#FF2D2D2D"
+            BorderBrush="{x:Null}"
+            Command="{Binding ChooseOutputLocationCommand}"
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="White">
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FFFF4D2F" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="#FF4CAF50" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Image
+                    Width="16"
+                    Height="16"
+                    Margin="5,0,0,0"
+                    Source="/folder.png" />
+            </StackPanel>
+        </Button>
+        -->
+
+
+
+        <Rectangle
+            Grid.Row="2"
+            Grid.RowSpan="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="0,40,0,35"
+            Fill="White"
+            RadiusX="20"
+            RadiusY="20" />
+
+
+        <Grid
+            Grid.Row="2"
+            Grid.RowSpan="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="0,40,0,35">
+            <StackPanel Margin="10">
+                <Button
+                    Height="30"
+                    Background="#FF2D2D2D"
+                    Command="{Binding AddFileToDecodeCommand}"
+                    FontFamily="Franklin Gothic Heavy"
+                    Foreground="White">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border
+                                x:Name="borderEnc"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                CornerRadius="8">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="borderEnc" Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="#FFFF4D2F" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Foreground" Value="White" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="Izaberi fajl za dekodiranje" />
+                        <Image
+                            Width="16"
+                            Height="16"
+                            Margin="5,0,0,0"
+                            Source="/upload.png" />
+                    </StackPanel>
+                </Button>
+
+                <ItemsControl ItemsSource="{Binding FileToDecode}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Margin="10"
+                                Foreground="Black"
+                                Text="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+
+            </StackPanel>
+        </Grid>
+
+        <TextBlock
+            Grid.RowSpan="2"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center"
+            FontFamily="Franklin Gothic Heavy"
+            FontSize="30"
+            Foreground="White"
+            Text="DEKODIRAJ"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+
+        <TextBlock
+            Grid.Row="6"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Franklin Gothic Heavy"
+            FontSize="15"
+            Foreground="White"
+            Text="Izaberite algoritam za dekodiranje:"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+
+        <ComboBox
+            Grid.Row="6"
+            Grid.Column="4"
+            FontFamily="Franklin Gothic Heavy"
+            FontSize="16"
+            Foreground="White"
+            SelectedValue="{Binding DecodeAlg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValuePath="Content">
+            <ComboBoxItem Content="A5/1" />
+            <ComboBoxItem Content="XTEA" />
+            <ComboBoxItem Content="XTEA + OFB" />
+        </ComboBox>
+
+        <TextBlock
+            Grid.Row="8"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Franklin Gothic Heavy"
+            FontSize="15"
+            Foreground="White"
+            Text="Unesite kljuc za dekodiranje:"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+
+        <TextBox
+            Grid.Row="8"
+            Grid.Column="3"
+            Grid.ColumnSpan="2"
+            Background="#FF2D2D2D"
+            BorderBrush="Orange"
+            BorderThickness="1"
+            Foreground="White"
+            Style="{StaticResource RoundedTextBox}"
+            Text="{Binding DecodeKey}"
+            TextAlignment="Left" />
+
+        <Button
+            Grid.Row="10"
+            Grid.Column="4"
+            Grid.ColumnSpan="2"
+            Width="200"
+            Margin="10,0,20,0"
+            Background="#FF2D2D2D"
+            BorderBrush="{x:Null}"
+            Command="{Binding DecodeCommand}"
+            Content="Dekodiraj"
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="White">
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FFFF4D2F" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="#FF4CAF50" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

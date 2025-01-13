@@ -1,7 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Printing.IndexedProperties;
+using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +19,8 @@ namespace ZI_CRYPTER.ViewModel
         private readonly PageModel _pageModel;
         public readonly ViewModelBase _vmBase;
         public ICommand ChooseOutputLocationCommand { get; set; }
+        public ICommand AddFileToDecodeCommand { get; set; }
+        public ICommand DecodeCommand { get; set; }
 
         public DekodirajVM(ViewModelBase vmb)
         {
@@ -23,6 +28,9 @@ namespace ZI_CRYPTER.ViewModel
 
             _vmBase = vmb;
             ChooseOutputLocationCommand = new RelayCommand(ChangeOutputLocation);
+            AddFileToDecodeCommand = new RelayCommand(AddFileToDecode);
+            DecodeCommand = new RelayCommand(Decode);
+
         }
 
         public string DecodeOutput
@@ -35,8 +43,71 @@ namespace ZI_CRYPTER.ViewModel
             }
         }
 
-       
+        public string DecodeKey
+        {
+            get => _vmBase.SharedDecodeKey;
+            set
+            {
+                _vmBase.SharedDecodeKey = value;
+                OnProprtyChanged(nameof(ViewModelBase));
+            }
+        }
+        public string DecodeAlg
+        {
+            get => _vmBase.SharedDecodeAlg;
+            set
+            {
+                _vmBase.SharedDecodeAlg = value;
+                OnProprtyChanged(nameof(ViewModelBase));
+            }
+        }
 
+        public ObservableCollection<string> FileToDecode
+        {
+            get => _vmBase.SharedFileToDecode;
+        }
+
+        private void AddFileToDecode(object parameter)
+        {
+            Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
+            ofd.Filter = "All files (*.*)|*.*";
+            ofd.Multiselect = false;
+            if (ofd.ShowDialog() == true)
+            {
+                FileToDecode.Clear();
+                FileToDecode.Add(ofd.FileName);
+            }
+            OnProprtyChanged();
+        }
+
+        private void Decode(object parameter)
+        {
+            if (FileToDecode.Count == 0)
+            {
+                WindowInfoAlert wia1 = new WindowInfoAlert("Niste odabrali fajl za dekodiranje!");
+
+                wia1.ShowDialog();
+                return;
+            }
+            if (DecodeAlg == "undef")
+            {
+                WindowInfoAlert wia2 = new WindowInfoAlert("Niste odabrali algoritam za dekodiranje");
+
+                wia2.ShowDialog();
+                return;
+            }
+            if (DecodeKey == "")
+            {
+                WindowInfoAlert wia3 = new WindowInfoAlert("Niste uneli kljuc za dekodiranje!");
+
+                wia3.ShowDialog();
+                return;
+            }
+           
+            WindowInfoAlert wia = new WindowInfoAlert("DEKODIRANO ! ! !");
+            wia.ShowDialog(); 
+            
+        }
         private void ChangeOutputLocation(object parameter)
         {
             var folderDialog = new OpenFolderDialog
@@ -49,10 +120,11 @@ namespace ZI_CRYPTER.ViewModel
                 var folderName = folderDialog.FolderName;
                 _vmBase.SharedDecodeOutputPutanja = folderName;
                 OnProprtyChanged(nameof(DecodeOutput));
+
             }
 
-           
-          
         }
+
+       
     }
 }

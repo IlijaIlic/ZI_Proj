@@ -9,23 +9,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="delete.png" />
+    <None Remove="deleteorange.png" />
     <None Remove="exit.png" />
     <None Remove="folder.png" />
     <None Remove="locked.png" />
+    <None Remove="recivefile.png" />
     <None Remove="send.png" />
     <None Remove="settings.png" />
     <None Remove="unlocked.png" />
     <None Remove="upload.png" />
+    <None Remove="uploadorange.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="delete.png" />
+    <Resource Include="deleteorange.png" />
     <Resource Include="exit.png" />
     <Resource Include="folder.png" />
     <Resource Include="locked.png" />
+    <Resource Include="recivefile.png" />
     <Resource Include="send.png" />
     <Resource Include="settings.png" />
     <Resource Include="unlocked.png" />
     <Resource Include="upload.png" />
+    <Resource Include="uploadorange.png" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,13 @@
 ﻿<Window
-    x:Class="ZI_CRYPTER.WindowLanding"
+    x:Class="ZI_CRYPTER.WindowInfoAlert"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ZI_CRYPTER"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="CRYPTER"
-    Width="800"
-    Height="450"
+    Title="WindowInfoAlert"
+    Width="600"
+    Height="200"
     AllowsTransparency="True"
     Background="{x:Null}"
     WindowStartupLocation="CenterScreen"
@@ -17,19 +17,11 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -48,72 +40,39 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
+
+        <Border Grid.ColumnSpan="4" Background="Orange">
+            <Border.CornerRadius>
+                <CornerRadius
+                    BottomLeft="0"
+                    BottomRight="0"
+                    TopLeft="20"
+                    TopRight="20" />
+            </Border.CornerRadius>
+        </Border>
         <TextBlock
-            Grid.Row="2"
-            Grid.RowSpan="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="4"
+            Margin="0,0,5,0"
+            VerticalAlignment="Center"
             FontFamily="Franklin Gothic Heavy"
-            FontSize="48"
+            FontSize="20"
             Foreground="White"
-            Text="ZI CRYPTER"
+            Text="Obavestenje!"
             TextAlignment="Center"
             TextWrapping="Wrap" />
-        <Button
-            Grid.Row="6"
-            Grid.RowSpan="2"
-            Grid.Column="2"
-            Grid.ColumnSpan="2"
-            Background="#FFFFAB25"
-            Click="Button_Click"
-            FontFamily="Franklin Gothic Heavy"
-            FontSize="24"
-            Foreground="White">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border
-                        x:Name="border"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="1"
-                        CornerRadius="20">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Offset="0.0" Color="#FFFF8500" />
-                                        <GradientStop Offset="1.0" Color="#FFFFAB25" />
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-            <Button.Effect>
-                <DropShadowEffect />
-            </Button.Effect>
-            POKRENI
-        </Button>
+
         <Button
             x:Name="XButton"
-            Grid.Row="0"
             Grid.RowSpan="1"
             Grid.Column="5"
             Grid.ColumnSpan="1"
-            Width="30"
-            Height="30"
-            Margin="90,0,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Bottom"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            Click="CloseApplicationButton_Click"
+            Width="40"
+            Height="40"
+            Margin="80,0,0,0"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            Click="CloseWindowButton_Click"
             FontFamily="Franklin Gothic Heavy"
-            FontSize="24"
+            FontSize="17"
             Foreground="White"
             OpacityMask="Black"
             RenderTransformOrigin="1.228,-0.037">
@@ -132,8 +91,8 @@
                             <Setter TargetName="border" Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Offset="0.0" Color="#FFFF8500" />
-                                        <GradientStop Offset="1.0" Color="#FFFFAB25" />
+                                        <GradientStop Offset="0.0" Color="#FF2D2D2D" />
+                                        <GradientStop Offset="1.0" Color="#FF252525" />
                                     </LinearGradientBrush>
                                 </Setter.Value>
                             </Setter>
@@ -144,5 +103,29 @@
             </Button.Template>
             X
         </Button>
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="4"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="16"
+            Foreground="White"
+            TextWrapping="Wrap" />
+
+        <Viewbox
+            Grid.Row="2"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="4"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <TextBlock
+                x:Name="InfoText"
+                Margin="20,0,20,0"
+                FontFamily="Franklin Gothic Heavy"
+                Foreground="White"
+                TextWrapping="Wrap" />
+        </Viewbox>
     </Grid>
 </Window>

@@ -18,7 +18,11 @@ namespace ZI_CRYPTER.ViewModel
         public object CurrentView
         {
             get { return _currentView; }
-            set { _currentView = value; OnProprtyChanged(); }
+            set 
+            { 
+                _currentView = value; 
+                OnProprtyChanged(); 
+            }
         }
 
         public ICommand DekodirajCommand { get; set; }
@@ -33,9 +37,20 @@ namespace ZI_CRYPTER.ViewModel
             CurrentView = dekodirajVm;
         }
 
-        private void Kodiraj(object obj) => CurrentView = new KodirajVM();
+        private void Kodiraj(object obj)
+        {
+            var kodirajVm = new KodirajVM(App.ViewModelBaseInstance);
+            
+            CurrentView = kodirajVm;
+        }
+
         private void Posalji(object obj) => CurrentView = new PosaljiVM();
-        private void Postavke(object obj) => CurrentView = new SettingsVM();
+        private void Postavke(object obj){
+
+            var postavkeVm = new SettingsVM(App.ViewModelBaseInstance);
+
+            CurrentView = postavkeVm;
+        }
 
         public NavigationVM()
         {
@@ -47,7 +62,7 @@ namespace ZI_CRYPTER.ViewModel
             PosaljiCommand = new RelayCommand(Posalji);
             PostavkeCommand = new RelayCommand(Postavke);
 
-            CurrentView = new KodirajVM();
+            CurrentView = new KodirajVM(App.ViewModelBaseInstance);
 
         }
     }

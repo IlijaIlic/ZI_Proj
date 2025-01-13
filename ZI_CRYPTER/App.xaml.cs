@@ -1,5 +1,7 @@
-﻿using System.Configuration;
+﻿using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Windows;
 using ZI_CRYPTER.Utils;
 
@@ -17,6 +19,16 @@ namespace ZI_CRYPTER
         {
             base.OnStartup(e);
             ViewModelBaseInstance.SharedDecodeOutputPutanja = "C:\\Program Files\\";
+            ViewModelBaseInstance.SharedCodeAlg = "undef";
+            ViewModelBaseInstance.SharedCodeKey = "";
+            ViewModelBaseInstance.SharedDecodeAlg = "undef";
+            ViewModelBaseInstance.SharedDecodeKey = "";
+
+            ViewModelBaseInstance.SharedFilesToCode = new ObservableCollection<string>();
+            ViewModelBaseInstance.SharedFileToDecode = new ObservableCollection<string>();
+
+            ViewModelBaseInstance.SharedFSWChecked = false;
+            ViewModelBaseInstance.SharedWatcher = new FileSystemWatcher();
         }
     }
 

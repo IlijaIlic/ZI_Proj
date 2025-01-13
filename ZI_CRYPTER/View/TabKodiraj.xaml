@@ -1,16 +1,18 @@
-﻿<UserControl x:Class="ZI_CRYPTER.View.TabKodiraj"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:ZI_CRYPTER.View"
-             xmlns:vm ="clr-namespace:ZI_CRYPTER.ViewModel"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+﻿<UserControl
+    x:Class="ZI_CRYPTER.View.TabKodiraj"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ZI_CRYPTER.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="[vm ]clr-namespace:ZI_CRYPTER.ViewModel"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
-    <UserControl.DataContext>
-        <vm:KodirajVM/>
-    </UserControl.DataContext>
+
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -35,135 +37,205 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.ColumnSpan="6"
-                   Grid.RowSpan="12"
-                   RadiusX="20" 
-                   RadiusY="20">
-            
-            <Rectangle.Fill>
-                
-                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
-                    
-                    <GradientStop Color="DarkOrange" Offset="0.0" />
-                    <GradientStop Color="Orange" Offset="0.9"/>
-                    
-                </LinearGradientBrush>
-                
-            </Rectangle.Fill>
-            
-        </Rectangle>
-        
-        <TextBlock Text="Fajlovi" 
-                   TextWrapping="Wrap" 
-                   TextAlignment="Center" 
-                   HorizontalAlignment="Center" 
-                   Foreground="White" 
-                   FontSize="20" 
-                   FontFamily="Franklin Gothic Heavy"
-                   Grid.Row="2"
-                   Grid.Column="1"
-                   Margin="0,0,20,0"/>
-        
-        <Rectangle Fill="White" 
-                   RadiusX="20" 
-                   RadiusY="20" 
-                   Margin="0,30"
-                   Grid.Row="2" Grid.RowSpan="8"
-                   Grid.ColumnSpan="4" Grid.Column="1"/>
+        <Rectangle
+            Grid.RowSpan="12"
+            Grid.ColumnSpan="6"
+            RadiusX="20"
+            RadiusY="20">
 
-        <ScrollViewer Grid.Row="2" Grid.RowSpan="8"
-                      Grid.ColumnSpan="4" Grid.Column="1"
-                      Margin="0,30"
-                      HorizontalScrollBarVisibility="Auto" 
-                      VerticalScrollBarVisibility="Auto"
-                      >
-            <Grid>
-                <!-- Your actual content goes here -->
-                <StackPanel Margin="10">
-                    <!-- Example items -->
-                    <Button  Background="Orange" 
-                             FontFamily="Franklin Gothic Heavy" 
-                             Foreground="White"
-                             Height="30">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="borderEnc" Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="8" >
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="borderEnc" Property="Background">
-                                            <Setter.Value>
-                                                <SolidColorBrush Color="#FFFF4D2F" />
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBlock Text="Dodaj Nove Fajlove" VerticalAlignment="Center" />
-                            <Image Source="/upload.png" Width="16" Height="16" Margin="5,0,0,0"/>
-                        </StackPanel>
-                    </Button>
-                    <TextBlock Text="File 1" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 2" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 3" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 4" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 5" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 6" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 7" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 8" Margin="10" Foreground="Black"/>
-                    <TextBlock Text="File 9" Margin="10" Foreground="Black"/>
-                </StackPanel>
-            </Grid>
+            <Rectangle.Fill>
+
+                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+
+                    <GradientStop Offset="0.0" Color="DarkOrange" />
+                    <GradientStop Offset="0.9" Color="Orange" />
+
+                </LinearGradientBrush>
+
+            </Rectangle.Fill>
+
+        </Rectangle>
+
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="0,0,20,0"
+            HorizontalAlignment="Left"
+            FontFamily="Franklin Gothic Heavy"
+            FontSize="20"
+            Foreground="White"
+            Text="Fajlovi za kodiranje"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+
+        <Rectangle
+            Grid.Row="2"
+            Grid.RowSpan="8"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="0,30"
+            Fill="White"
+            RadiusX="20"
+            RadiusY="20" />
+
+
+
+        <ScrollViewer
+            Grid.Row="2"
+            Grid.RowSpan="8"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Margin="0,30"
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding FilesToCode}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Margin="10"
+                            Foreground="Black"
+                            Text="{Binding}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </ScrollViewer>
 
-        <TextBlock Text="KODIRAJ" 
-                   TextWrapping="Wrap" 
-                   TextAlignment="Center" 
-                   HorizontalAlignment="Center" 
-                   Foreground="White" 
-                   FontSize="30" 
-                   FontFamily="Franklin Gothic Heavy"
-                   Grid.RowSpan="2"
-                   Grid.ColumnSpan="2" Grid.Column="2"
-                   Margin="0, 10, 0, 0"/>
-
-        <StackPanel Orientation="Horizontal" 
-                    Margin="20,2,0,0"
-                    Grid.Row="10"
-                    VerticalAlignment="Center">
-            
-            <TextBlock Text="FSW" 
-                       FontFamily="Franklin Gothic Heavy" 
-                       Foreground="White"
-                       FontSize="15"/>
-            <CheckBox Margin="10,0,0,0" Background="White" Foreground="#FFFF9300"></CheckBox>
-            
-        </StackPanel>
-        
-        <Button Content="Kodiraj"
-                Margin="10,0,20,0" 
-                FontFamily="Franklin Gothic Heavy" 
-                Background="White" 
-                Foreground="#FFFF9400" BorderBrush="{x:Null}"
-                Grid.Row="10" Grid.ColumnSpan="2"
-                Grid.Column="4"
-                Width="200">
-            
+        <Button
+            Grid.Row="4"
+            Grid.Column="5"
+            Grid.ColumnSpan="1"
+            Margin="40,0"
+            Background="#FF2D2D2D"
+            Command="{Binding AddFileCommand}"
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="White">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="border" 
-                            Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="1" CornerRadius="10">
-                        <ContentPresenter x:Name="contentPresenter" 
-                                          HorizontalAlignment="Center" 
-                                          VerticalAlignment="Center" 
-                                          TextElement.Foreground="{TemplateBinding Foreground}"/>
+                    <Border
+                        x:Name="borderEnc"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="8">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="borderEnc" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FFFF4D2F" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Image
+                Width="16"
+                Height="16"
+                Source="/upload.png" />
+
+        </Button>
+
+        <Button
+            Grid.Row="6"
+            Grid.Column="5"
+            Grid.ColumnSpan="1"
+            Margin="40,0"
+            Background="#FF2D2D2D"
+            Command="{Binding RemoveAllFilesCommand}"
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="Orange">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="borderEnc"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="8">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="borderEnc" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FFFF4D2F" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground" Value="White" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+
+            <Image
+                Width="16"
+                Height="16"
+                Source="/delete.png" />
+        </Button>
+
+
+        <TextBlock
+            Grid.RowSpan="2"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Center"
+            FontFamily="Franklin Gothic Heavy"
+            FontSize="30"
+            Foreground="White"
+            Text="KODIRAJ"
+            TextAlignment="Center"
+            TextWrapping="Wrap" />
+
+        <StackPanel
+            Grid.Row="10"
+            Margin="20,2,0,0"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+
+            <TextBlock
+                FontFamily="Franklin Gothic Heavy"
+                FontSize="15"
+                Foreground="White"
+                Text="FSW" />
+            <CheckBox
+                Margin="10,0,0,0"
+                Background="White"
+                Command="{Binding CheckCommand}"
+                CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                Foreground="#FFFF9300"
+                IsChecked="{Binding FSWCheck, Mode=TwoWay}" />
+
+        </StackPanel>
+
+        <Button
+            Grid.Row="10"
+            Grid.Column="4"
+            Grid.ColumnSpan="2"
+            Width="200"
+            Margin="10,0,20,0"
+            Background="#FF2D2D2D"
+            BorderBrush="{x:Null}"
+            Command="{Binding CodeCommand}"
+            Content="Kodiraj"
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="White">
+
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                        <ContentPresenter
+                            x:Name="contentPresenter"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            TextElement.Foreground="{TemplateBinding Foreground}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
@@ -172,12 +244,12 @@
                                     <SolidColorBrush Color="#FFFF4D2F" />
                                 </Setter.Value>
                             </Setter>
-                            <Setter  Property="Foreground" Value="#FF4CAF50"/>
+                            <Setter Property="Foreground" Value="#FF4CAF50" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Button.Template>
-            
+
         </Button>
     </Grid>
 </UserControl>
