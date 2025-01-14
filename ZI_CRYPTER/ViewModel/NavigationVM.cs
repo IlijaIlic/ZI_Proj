@@ -44,7 +44,12 @@ namespace ZI_CRYPTER.ViewModel
             CurrentView = kodirajVm;
         }
 
-        private void Posalji(object obj) => CurrentView = new PosaljiVM();
+        private void Posalji(object obj) 
+        {
+            var posaljiVm = new PosaljiVM(App.ViewModelBaseInstance);
+
+            CurrentView = posaljiVm;
+        }
         private void Postavke(object obj){
 
             var postavkeVm = new SettingsVM(App.ViewModelBaseInstance);

@@ -13,6 +13,28 @@ namespace ZI_CRYPTER.Utils
     public class ViewModelBase : INotifyPropertyChanged
     {
 
+        private string _sharedSendIP;
+        public string SharedSendIP
+        {
+            get => _sharedSendIP;
+            set
+            {
+                _sharedSendIP = value;
+                OnProprtyChanged(nameof(SharedSendIP));
+            }
+        }
+
+        private string _sharedSendPort;
+        public string SharedSendPort
+        {
+            get => _sharedSendPort;
+            set
+            {
+                _sharedSendPort = value;
+                OnProprtyChanged(nameof(SharedSendPort));
+            }
+        }
+
         private ObservableCollection<string> _sharedFileToDecode;
         public ObservableCollection<string> SharedFileToDecode
         {

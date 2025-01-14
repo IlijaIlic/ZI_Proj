@@ -29,6 +29,9 @@ namespace ZI_CRYPTER
 
             ViewModelBaseInstance.SharedFSWChecked = false;
             ViewModelBaseInstance.SharedWatcher = new FileSystemWatcher();
+
+            ViewModelBaseInstance.SharedSendIP = "";
+            ViewModelBaseInstance.SharedSendPort = "";
         }
     }
 
