@@ -29,6 +29,7 @@ namespace ZI_CRYPTER.ViewModel
         public ICommand KodirajCommand{ get; set; }
         public ICommand PosaljiCommand { get; set; }
         public ICommand PostavkeCommand { get; set; }
+        public ICommand PrimiCommand { get; set; }
 
         private void Dekodiraj(object obj)
         {
@@ -57,6 +58,12 @@ namespace ZI_CRYPTER.ViewModel
             CurrentView = postavkeVm;
         }
 
+        private void Primi(object obj)
+        {
+            var primiVm = new ReceiveVM(App.ViewModelBaseInstance);
+            CurrentView = primiVm;
+        }
+
         public NavigationVM()
         {
 
@@ -66,6 +73,8 @@ namespace ZI_CRYPTER.ViewModel
             KodirajCommand = new RelayCommand(Kodiraj);
             PosaljiCommand = new RelayCommand(Posalji);
             PostavkeCommand = new RelayCommand(Postavke);
+            PrimiCommand = new RelayCommand(Primi);
+
 
             CurrentView = new KodirajVM(App.ViewModelBaseInstance);
 

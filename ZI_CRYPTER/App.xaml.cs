@@ -18,20 +18,21 @@ namespace ZI_CRYPTER
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            ViewModelBaseInstance.SharedDecodeOutputPutanja = "C:\\Program Files\\";
             ViewModelBaseInstance.SharedCodeAlg = "undef";
             ViewModelBaseInstance.SharedCodeKey = "";
-            ViewModelBaseInstance.SharedDecodeAlg = "undef";
-            ViewModelBaseInstance.SharedDecodeKey = "";
-
-            ViewModelBaseInstance.SharedFilesToCode = new ObservableCollection<string>();
-            ViewModelBaseInstance.SharedFileToDecode = new ObservableCollection<string>();
-
             ViewModelBaseInstance.SharedFSWChecked = false;
             ViewModelBaseInstance.SharedWatcher = new FileSystemWatcher();
+            ViewModelBaseInstance.SharedFilesToCode = new ObservableCollection<string>();
+
+            ViewModelBaseInstance.SharedDecodeOutputPutanja = "C:\\Program Files\\";
+            ViewModelBaseInstance.SharedDecodeAlg = "undef";
+            ViewModelBaseInstance.SharedDecodeKey = "";
+            ViewModelBaseInstance.SharedFileToDecode = new ObservableCollection<string>();
 
             ViewModelBaseInstance.SharedSendIP = "";
             ViewModelBaseInstance.SharedSendPort = "";
+
+            ViewModelBaseInstance.SharedReceivePort = "";
         }
     }
 

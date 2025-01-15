@@ -32,7 +32,7 @@ namespace ZI_CRYPTER.ViewModel
             AddFileToDecodeCommand = new RelayCommand(AddFileToDecode);
             DecodeCommand = new RelayCommand(Decode);
 
-        }
+            }
 
         public string DecodeOutput
         {

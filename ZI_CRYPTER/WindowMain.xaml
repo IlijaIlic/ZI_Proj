@@ -214,7 +214,7 @@
             Grid.ColumnSpan="2"
             Background="Transparent"
             BorderBrush="#FF282828"
-            Command="{Binding PosaljiCommand}"
+            Command="{Binding PrimiCommand}"
             FontFamily="Franklin Gothic Heavy"
             Foreground="White">
             <Button.Template>

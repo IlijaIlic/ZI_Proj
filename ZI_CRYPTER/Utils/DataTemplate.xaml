@@ -1,22 +1,28 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:vm="clr-namespace:ZI_CRYPTER.ViewModel"
-                    xmlns:view="clr-namespace:ZI_CRYPTER.View">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:view="clr-namespace:ZI_CRYPTER.View"
+    xmlns:vm="clr-namespace:ZI_CRYPTER.ViewModel">
 
     <DataTemplate DataType="{x:Type vm:KodirajVM}">
         <view:TabKodiraj />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:DekodirajVM}">
-        <view:TabDekodiraj/>
+        <view:TabDekodiraj />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:PosaljiVM}">
-        <view:TabPosalji/>
+        <view:TabPosalji />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:SettingsVM}">
-        <view:TabSettings/>
+        <view:TabSettings />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ReceiveVM}">
+        <view:TabReceive />
+    </DataTemplate>
+
 
 </ResourceDictionary>
