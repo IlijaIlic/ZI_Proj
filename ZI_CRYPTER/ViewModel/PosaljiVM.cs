@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
+using System.Net;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +29,7 @@ namespace ZI_CRYPTER.ViewModel
             _vmBase = vmb;
 
             AddFileToSendCommand = new RelayCommand(AddFileToSend);
-            PosaljiCommand = new RelayCommand(Posalji); 
+            PosaljiCommand = new RelayCommand(async (param) => await Posalji(param));
         }
 
         public string SendIP1
@@ -102,11 +105,51 @@ namespace ZI_CRYPTER.ViewModel
 
         #region EventHandlersKlijent
 
-        private async void Posalji(object sender)
+        private async Task Posalji(object sender)
         {
-            if(SendIP1 != "" && SendPort != "")
+            try
             {
-                await Soketi.AdvanceKlijent(String.Concat(SendIP1, ".", SendIP2, ".", SendIP3, ".", SendIP4), SendPort, FileToSend[0], InfoText); 
+                using (Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    string ip = String.Concat(SendIP1, ".", SendIP2, ".", SendIP3, ".", SendIP4);
+                    await clientSocket.ConnectAsync(ip, Int32.Parse(SendPort));
+
+                    using (NetworkStream networkStream = new NetworkStream(clientSocket))
+                    using (BinaryReader reader = new BinaryReader(networkStream))
+                    using (BinaryWriter writer = new BinaryWriter(networkStream))
+                    {
+                        string filePath = FileToSend[0];
+                        string fileName = Path.GetFileName(filePath);
+                        long fileSize = new FileInfo(filePath).Length;
+
+                        // Слање метаподатака (име фајла и величина) treba i hes 
+                        writer.Write(fileName);
+                        writer.Write(fileSize);
+
+                        // Слање фајла у блоковима
+                        using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                        {
+                            byte[] buffer = new byte[4096];
+                            int bytesRead;
+
+                            while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            {
+                                await networkStream.WriteAsync(buffer, 0, bytesRead);
+                            }
+                        }
+
+                        // Примање потврде са сервера
+                        string response = reader.ReadString();
+                        InfoText = $"Server response: {response}";
+                        OnProprtyChanged(nameof(InfoText));
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                InfoText = $"Error: {ex.Message}";
+                OnProprtyChanged(nameof(InfoText));
             }
         }
 

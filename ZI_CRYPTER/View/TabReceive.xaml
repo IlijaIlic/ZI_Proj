@@ -109,6 +109,7 @@
         <ToggleButton
             Grid.Row="10"
             Grid.Column="4"
+            Command="{Binding ListenCommand}"
             IsChecked="{Binding ReceiveChecked, Mode=TwoWay}">
             <ToggleButton.Template>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -183,6 +184,16 @@
             Foreground="White"
             Text="Unesite kljuc za dekodiranje:"
             TextAlignment="Center"
+            TextWrapping="Wrap" />
+
+        <TextBlock
+            Grid.Row="10"
+            Grid.ColumnSpan="2"
+            Width="200"
+            Margin="20,0,10,0"
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="White"
+            Text="{Binding InfoTextRec, PresentationTraceSources.TraceLevel=High}"
             TextWrapping="Wrap" />
 
         <TextBox

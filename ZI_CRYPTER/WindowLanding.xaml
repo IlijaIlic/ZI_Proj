@@ -36,9 +36,11 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
+
         <Rectangle
             Grid.RowSpan="12"
             Grid.ColumnSpan="6"
+            MouseDown="Window_MouseDown"
             RadiusX="20"
             RadiusY="20">
             <Rectangle.Fill>

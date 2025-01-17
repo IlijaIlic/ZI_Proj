@@ -124,6 +124,7 @@
                 BorderThickness="1"
                 Foreground="White"
                 MaxLength="3"
+                PreviewTextInput="NumberValidationTextBox"
                 Style="{StaticResource RoundedTextBox}"
                 Text="{Binding SendIP1}"
                 TextAlignment="Center" />
@@ -146,6 +147,7 @@
                 BorderThickness="1"
                 Foreground="White"
                 MaxLength="3"
+                PreviewTextInput="NumberValidationTextBox"
                 Style="{StaticResource RoundedTextBox}"
                 Text="{Binding SendIP2}"
                 TextAlignment="Center" />
@@ -172,6 +174,7 @@
                 BorderThickness="1"
                 Foreground="White"
                 MaxLength="3"
+                PreviewTextInput="NumberValidationTextBox"
                 Style="{StaticResource RoundedTextBox}"
                 Text="{Binding SendIP3}"
                 TextAlignment="Center" />
@@ -198,9 +201,11 @@
                 BorderThickness="1"
                 Foreground="White"
                 MaxLength="3"
+                PreviewTextInput="NumberValidationTextBox"
                 Style="{StaticResource RoundedTextBox}"
                 Text="{Binding SendIP4}"
                 TextAlignment="Center" />
+
         </StackPanel>
 
 
@@ -285,25 +290,23 @@
             BorderThickness="1"
             Foreground="White"
             MaxLength="5"
+            PreviewTextInput="NumberValidationTextBox"
             Style="{StaticResource RoundedTextBox}"
             Text="{Binding SendPort}"
             TextAlignment="Center" />
 
-        <Viewbox
+
+
+        <TextBlock
             Grid.Row="10"
             Grid.ColumnSpan="2"
             Width="200"
             Margin="20,0,10,0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch">
+            FontFamily="Franklin Gothic Heavy"
+            Foreground="White"
+            Text="{Binding InfoText, PresentationTraceSources.TraceLevel=High}"
+            TextWrapping="Wrap" />
 
-            <TextBlock
-                FontFamily="Franklin Gothic Heavy"
-                Foreground="White"
-                Text="{Binding InfoText}"
-                TextWrapping="Wrap" />
-
-        </Viewbox>
 
         <Button
             Grid.Row="10"
