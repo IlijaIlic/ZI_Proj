@@ -90,6 +90,8 @@
             TextAlignment="Center"
             TextWrapping="Wrap" />
 
+
+
         <TextBlock
             Grid.Row="5"
             Grid.Column="1"
@@ -123,6 +125,7 @@
                 Foreground="White"
                 MaxLength="3"
                 Style="{StaticResource RoundedTextBox}"
+                Text="{Binding SendIP1}"
                 TextAlignment="Center" />
 
             <TextBlock
@@ -134,6 +137,7 @@
                 Text="."
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
+
             <TextBox
                 Width="50"
                 Margin="5,0,5,0"
@@ -143,7 +147,9 @@
                 Foreground="White"
                 MaxLength="3"
                 Style="{StaticResource RoundedTextBox}"
+                Text="{Binding SendIP2}"
                 TextAlignment="Center" />
+
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="1"
@@ -167,7 +173,9 @@
                 Foreground="White"
                 MaxLength="3"
                 Style="{StaticResource RoundedTextBox}"
+                Text="{Binding SendIP3}"
                 TextAlignment="Center" />
+
             <TextBlock
                 Grid.Row="5"
                 Grid.Column="1"
@@ -181,6 +189,7 @@
                 Text="."
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
+
             <TextBox
                 Width="50"
                 Margin="5,0,5,0"
@@ -190,6 +199,7 @@
                 Foreground="White"
                 MaxLength="3"
                 Style="{StaticResource RoundedTextBox}"
+                Text="{Binding SendIP4}"
                 TextAlignment="Center" />
         </StackPanel>
 
@@ -206,7 +216,7 @@
                 <Button
                     Height="30"
                     Background="#FF2D2D2D"
-                    Command="{Binding AddFileToDecodeCommand}"
+                    Command="{Binding AddFileToSendCommand}"
                     FontFamily="Franklin Gothic Heavy"
                     Foreground="White">
                     <Button.Template>
@@ -240,7 +250,7 @@
                     </StackPanel>
                 </Button>
 
-                <ItemsControl ItemsSource="{Binding FileToDecode}">
+                <ItemsControl ItemsSource="{Binding FileToSend}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
@@ -279,6 +289,21 @@
             Text="{Binding SendPort}"
             TextAlignment="Center" />
 
+        <Viewbox
+            Grid.Row="10"
+            Grid.ColumnSpan="2"
+            Width="200"
+            Margin="20,0,10,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch">
+
+            <TextBlock
+                FontFamily="Franklin Gothic Heavy"
+                Foreground="White"
+                Text="{Binding InfoText}"
+                TextWrapping="Wrap" />
+
+        </Viewbox>
 
         <Button
             Grid.Row="10"
@@ -288,7 +313,7 @@
             Margin="10,0,20,0"
             Background="#FF2D2D2D"
             BorderBrush="{x:Null}"
-            Command="{Binding CodeCommand}"
+            Command="{Binding PosaljiCommand}"
             Content="Posalji"
             FontFamily="Franklin Gothic Heavy"
             Foreground="White">

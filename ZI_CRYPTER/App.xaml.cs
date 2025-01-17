@@ -29,10 +29,16 @@ namespace ZI_CRYPTER
             ViewModelBaseInstance.SharedDecodeKey = "";
             ViewModelBaseInstance.SharedFileToDecode = new ObservableCollection<string>();
 
-            ViewModelBaseInstance.SharedSendIP = "";
+            ViewModelBaseInstance.SharedSendIP1 = "";
+            ViewModelBaseInstance.SharedSendIP2 = "";
+            ViewModelBaseInstance.SharedSendIP3 = "";
+            ViewModelBaseInstance.SharedSendIP4 = "";
             ViewModelBaseInstance.SharedSendPort = "";
+            ViewModelBaseInstance.SharedInfoText = "";
+            ViewModelBaseInstance.SharedFileToSend = new ObservableCollection<string>();
 
             ViewModelBaseInstance.SharedReceivePort = "";
+            ViewModelBaseInstance.SharedInfoTextRec = "";
         }
     }
 

@@ -14,8 +14,19 @@ namespace ZI_CRYPTER.Utils
     public class ViewModelBase : INotifyPropertyChanged
     {
        
+        // ReceiveVM
+        private bool _sharedReceiveChecked;
+        public bool SharedReceiveChecked
+        {
+            get => _sharedReceiveChecked;
+            set
+            {
+                _sharedReceiveChecked = value;
+                OnProprtyChanged(nameof(SharedReceiveChecked));
+            }
+        }
 
-        // ReceiveVM - nekorisceno
+        // ReceiveVM 
         private string _sharedReceivePort;
         public string SharedReceivePort
         {
@@ -28,7 +39,7 @@ namespace ZI_CRYPTER.Utils
         }
 
 
-        // ReceiveVM - nekorisceno
+        // ReceiveVM 
         private string _sharedReceiveKey;
         public string SharedReceiveKey
         {
@@ -41,7 +52,7 @@ namespace ZI_CRYPTER.Utils
         }
 
 
-        // ReceiveVM - nekorisceno
+        // ReceiveVM 
         private string _sharedReceiveAlg;
         public string SharedReceiveAlg
         {
@@ -56,7 +67,7 @@ namespace ZI_CRYPTER.Utils
 
         // ReceiveVM - nekorisceno
         private ObservableCollection<string> _sharedFileToReceive;
-        private ObservableCollection<string> SharedFileToReceive
+        public ObservableCollection<string> SharedFileToReceive
         {
             get => _sharedFileToReceive;
             set
@@ -67,7 +78,21 @@ namespace ZI_CRYPTER.Utils
         }
 
 
-        // PosaljiVM - nekorisceno
+        // ReceiveVM
+        private string _sharedInfoTextRec;
+        public string SharedInfoTextRec
+        {
+            get => _sharedInfoTextRec;
+            set
+            {
+                _sharedInfoTextRec = value;
+                OnProprtyChanged(nameof(SharedInfoTextRec));
+            }
+        }
+
+
+
+        // PosaljiVM 
         private ObservableCollection<string> _sharedFileToSend;
         public ObservableCollection<string> SharedFileToSend
         {
@@ -80,15 +105,54 @@ namespace ZI_CRYPTER.Utils
         }
 
 
-        // PosaljiVM nije gotovo 4 u 1 ???? - nekorisceno
-        private string _sharedSendIP;
-        public string SharedSendIP
+        // PosaljiVM 
+        private string _sharedSendIP1;
+        public string SharedSendIP1
         {
-            get => _sharedSendIP;
+            get => _sharedSendIP1;
             set
             {
-                _sharedSendIP = value;
-                OnProprtyChanged(nameof(SharedSendIP));
+                _sharedSendIP1 = value;
+                OnProprtyChanged(nameof(SharedSendIP1));
+            }
+        }
+
+
+        // PosaljiVM 
+        private string _sharedSendIP2;
+        public string SharedSendIP2
+        {
+            get => _sharedSendIP2;
+            set
+            {
+                _sharedSendIP2 = value;
+                OnProprtyChanged(nameof(SharedSendIP2));
+            }
+        }
+
+
+        // PosaljiVM 
+        private string _sharedSendIP3;
+        public string SharedSendIP3
+        {
+            get => _sharedSendIP3;
+            set
+            {
+                _sharedSendIP3 = value;
+                OnProprtyChanged(nameof(SharedSendIP3));
+            }
+        }
+
+
+        // PosaljiVM 
+        private string _sharedSendIP4;
+        public string SharedSendIP4
+        {
+            get => _sharedSendIP4;
+            set
+            {
+                _sharedSendIP4 = value;
+                OnProprtyChanged(nameof(SharedSendIP4));
             }
         }
 
@@ -104,6 +168,21 @@ namespace ZI_CRYPTER.Utils
                 OnProprtyChanged(nameof(SharedSendPort));
             }
         }
+
+
+        // PosaljiVM
+        private string _sharedInfoText;
+        public string SharedInfoText
+        {
+            get => _sharedInfoText;
+            set
+            {
+                _sharedInfoText = value;
+                OnProprtyChanged(nameof(SharedInfoText));
+            }
+        }
+
+
 
 
         // KodirajVM
@@ -189,6 +268,8 @@ namespace ZI_CRYPTER.Utils
         }
 
 
+
+
         // DekodriajVM
         private string _decodeKey;
         public string SharedDecodeKey
@@ -226,6 +307,7 @@ namespace ZI_CRYPTER.Utils
                 OnProprtyChanged(nameof(SharedDecodeOutputPutanja));
             }
         }
+
 
         // DekodirajVM
         private ObservableCollection<string> _sharedFileToDecode;

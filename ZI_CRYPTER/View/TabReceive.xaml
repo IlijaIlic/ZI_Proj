@@ -103,10 +103,13 @@
             Foreground="White"
             MaxLength="5"
             Style="{StaticResource RoundedTextBox}"
-            Text="{Binding SendPort}"
+            Text="{Binding ReceivePort}"
             TextAlignment="Center" />
 
-        <ToggleButton Grid.Row="10" Grid.Column="4">
+        <ToggleButton
+            Grid.Row="10"
+            Grid.Column="4"
+            IsChecked="{Binding ReceiveChecked, Mode=TwoWay}">
             <ToggleButton.Template>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border
@@ -161,7 +164,7 @@
             FontFamily="Franklin Gothic Heavy"
             FontSize="16"
             Foreground="White"
-            SelectedValue="{Binding DecodeAlg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedValue="{Binding ReceiveAlg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Content">
             <ComboBoxItem Content="A5/1" />
             <ComboBoxItem Content="XTEA" />
@@ -191,7 +194,7 @@
             BorderThickness="1"
             Foreground="White"
             Style="{StaticResource RoundedTextBox}"
-            Text="{Binding DecodeKey}"
+            Text="{Binding ReceiveKey}"
             TextAlignment="Left" />
 
     </Grid>
