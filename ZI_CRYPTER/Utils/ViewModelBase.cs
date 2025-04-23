@@ -78,6 +78,19 @@ namespace ZI_CRYPTER.Utils
         }
 
 
+        //ReceiveVM
+        private string _sharedReceiveOutput;
+        public string SharedReceiveOutput
+        {
+            get => _sharedReceiveOutput;
+            set
+            {
+                _sharedReceiveOutput = value;
+                OnProprtyChanged(nameof(SharedReceiveOutput));
+            }
+        }
+
+
         // ReceiveVM
         private string _sharedInfoTextRec;
         public string SharedInfoTextRec

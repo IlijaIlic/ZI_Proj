@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -19,8 +20,9 @@ namespace ZI_CRYPTER.ViewModel
         private readonly PageModel _pageModel;
         public readonly ViewModelBase _vmBase;
         private Socket serverSocket;
-        
 
+
+        public ICommand ChangeReceiveLocationCommand { get; set; }
         public ICommand ListenCommand { get; set; }
 
         public ReceiveVM(ViewModelBase vmb)
@@ -29,6 +31,7 @@ namespace ZI_CRYPTER.ViewModel
             _vmBase = vmb;
 
             ListenCommand = new RelayCommand(async (param)=>await Osluskuj(param));
+            ChangeReceiveLocationCommand = new RelayCommand(ChangeReceiveLocation);
         }
         
         public string ReceivePort
@@ -91,12 +94,17 @@ namespace ZI_CRYPTER.ViewModel
             }
         }
 
-        private void Listen(object obj)
+        public string ReceiveOutput
         {
-            WindowInfoAlert wia = new WindowInfoAlert("Osluskivanje ukljuceno");
+            get => _vmBase.SharedReceiveOutput;
+            set
+            {
+                _vmBase.SharedReceiveOutput = value;
+                OnProprtyChanged(nameof(SharedReceiveOutput));
+            }
         }
 
-
+        // OTVORI FOLDER KAD PRIMI FAJL
         private async Task Osluskuj(object sender)
         {
             if(ReceiveChecked)
@@ -135,20 +143,35 @@ namespace ZI_CRYPTER.ViewModel
                 try
                 {
                     serverSocket?.Close();
-                    // UPOZORI KORISNIKA
-                    // UpdateStatus(sslServer, "Server je zaustavljen.");
+                    InfoTextRec = "Server je zaustavljen.";
+                    OnProprtyChanged(nameof(InfoTextRec));
                 }
                 catch (Exception ex)
                 {
-                    // UPOZORI KORISNIKA
-                    // UpdateStatus(sslServer, $"Greška u prekidu slušanja: {ex.Message}");
+                    InfoTextRec = $"Greška u prekidu slušanja: {ex.Message}";
+                    OnProprtyChanged(nameof(InfoTextRec));
                 }
             }
             
         }
 
+        private void ChangeReceiveLocation(object parameter)
+        {
+            var folderDialog = new OpenFolderDialog
+            {
 
-       
+            };
+
+            if (folderDialog.ShowDialog() == true)
+            {
+                var folderName = folderDialog.FolderName;
+                ReceiveOutput = folderName;
+                OnProprtyChanged(nameof(ReceiveOutput));
+
+            }
+
+        }
+
 
         private async Task HandleClientAsyncAdvance(Socket clientSocket)
         {
@@ -181,8 +204,15 @@ namespace ZI_CRYPTER.ViewModel
                         }
                     }
 
-                    InfoTextRec = $"Fajl {fileName} uspešno preuzet.";
+                    //InfoTextRec = $"Fajl {fileName} uspešno preuzet.";
+                    InfoTextRec = savePath;
                     OnProprtyChanged(nameof(InfoTextRec));
+
+                    if(ReceiveAlg == "XTEA" && ReceiveKey != "")
+                    {
+                        byte[] keyByte = Encoding.ASCII.GetBytes(ReceiveKey);
+                        XTEA.DecryptFile("Received_" + fileName, Path.Combine(ReceiveOutput, fileName), keyByte);
+                    }
 
                     writer.Write("Fajl je uspešno preuzet.");
                 }

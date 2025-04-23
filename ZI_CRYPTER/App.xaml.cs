@@ -39,6 +39,7 @@ namespace ZI_CRYPTER
 
             ViewModelBaseInstance.SharedReceivePort = "";
             ViewModelBaseInstance.SharedInfoTextRec = "";
+            ViewModelBaseInstance.SharedReceiveOutput = "C:\\Program Files\\";
         }
     }
 
