@@ -13,6 +13,19 @@ namespace ZI_CRYPTER.Utils
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
+
+
+        // SettingsVM
+        private string _sharedXPath = @"C:\Users\";
+        public string SharedXPath
+        {
+            get => _sharedXPath;
+            set
+            {
+                _sharedXPath = value;
+                OnProprtyChanged(nameof(SharedXPath));
+            }
+        }
        
         // ReceiveVM
         private bool _sharedReceiveChecked;
@@ -212,10 +225,16 @@ namespace ZI_CRYPTER.Utils
 
 
         // KodirajVM
-        private static string _codeFSWPath = @"C:\Users\ilici\Desktop\trt\";
-        public static string SharedFSWPath
+        private string _codeFSWPath = @"C:\Users\";
+        public string SharedFSWPath
         {
             get => _codeFSWPath;
+            set
+            {
+                _codeFSWPath = value;
+                OnProprtyChanged(nameof(SharedFSWPath));
+
+            }
         }
 
 

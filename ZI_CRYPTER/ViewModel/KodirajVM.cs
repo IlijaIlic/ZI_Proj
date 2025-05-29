@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ZI_CRYPTER.Model;
 using ZI_CRYPTER.Utils;
@@ -21,6 +17,7 @@ namespace ZI_CRYPTER.ViewModel
         public ICommand RemoveAllFilesCommand { get; set; }
         public ICommand AddFileCommand { get; set; }
         public ICommand CodeCommand { get; set; }
+        public ICommand ChangeTargetLocationCommand { get; set; }
 
 
 
@@ -33,7 +30,6 @@ namespace ZI_CRYPTER.ViewModel
             RemoveAllFilesCommand = new RelayCommand(RemoveAllFiles);
             AddFileCommand = new RelayCommand(AddFile);
             CodeCommand = new RelayCommand(Code);
-
         }
 
 
@@ -78,9 +74,30 @@ namespace ZI_CRYPTER.ViewModel
             }
         }
 
+        public string FSWPath
+        {
+            get => _vmBase.SharedFSWPath;
+            set
+            {
+                _vmBase.SharedFSWPath = value;
+                OnProprtyChanged();
+            }
+        }
+
+        public string XPath
+        {
+            get => _vmBase.SharedXPath;
+            set
+            {
+                _vmBase.SharedXPath = value;
+                OnProprtyChanged();
+            }
+
+        }
+
         public ObservableCollection<string> FilesToCode
-        { 
-            get => _vmBase.SharedFilesToCode; 
+        {
+            get => _vmBase.SharedFilesToCode;
         }
 
 
@@ -91,13 +108,13 @@ namespace ZI_CRYPTER.ViewModel
                 WindowInfoAlert wia = new WindowInfoAlert("Morate odabrati algoritam za kodiranje u postavkama!");
                 wia.ShowDialog();
             }
-            else if(CodeKey == "" )
+            else if (CodeKey == "")
             {
                 WindowInfoAlert wia = new WindowInfoAlert("Morate uneti kljuc za kodiranje u postavkama!");
                 wia.ShowDialog();
 
             }
-            else if(FilesToCode.Count == 0)
+            else if (FilesToCode.Count == 0)
             {
                 WindowInfoAlert wia = new WindowInfoAlert("Nema fajlova za kodiranje!");
                 wia.ShowDialog();
@@ -107,25 +124,25 @@ namespace ZI_CRYPTER.ViewModel
 
                 if (CodeAlg == "XTEA")
                 {
-                    
+
                     byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
 
                     if (FSWCheck)
                     {
                         foreach (var file in FilesToCode)
                         {
-                            XTEA.EncryptFile(String.Concat(ViewModelBase.SharedFSWPath, file), String.Concat(ViewModelBase.SharedFSWPath, String.Concat("enc - ",file)), keyBytes);
+                            XTEA.EncryptFile(Path.Combine(FSWPath, file), Path.Combine(XPath,"enc - " + file), keyBytes);
                         }
-                        WindowInfoAlert wia = new WindowInfoAlert("💥💥💥");
+                        WindowInfoAlert wia = new WindowInfoAlert("Uspesno kodirano :D");
                         wia.ShowDialog();
                     }
                     else
                     {
                         foreach (var file in FilesToCode)
                         {
-                            XTEA.EncryptFile( file, String.Concat(ViewModelBase.SharedFSWPath, String.Concat("enc - ", Path.GetFileName(file))), keyBytes);
+                            XTEA.EncryptFile(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes);
                         }
-                        WindowInfoAlert wia = new WindowInfoAlert("💥💥💥");
+                        WindowInfoAlert wia = new WindowInfoAlert("Uspesno kodirano :D");
                         wia.ShowDialog();
                     }
                 }
@@ -138,9 +155,9 @@ namespace ZI_CRYPTER.ViewModel
             if (FSWCheck)
             {
                 WindowInfoAlert wia = new WindowInfoAlert("Ne možete ukloniti fajlove dok je FSW ukljucen!");
-                
+
                 wia.ShowDialog();
-            } 
+            }
             else
             {
                 FilesToCode.Clear();
@@ -179,38 +196,39 @@ namespace ZI_CRYPTER.ViewModel
         {
             if (parameter is bool isChecked)
             {
-                if (isChecked)
+                try
                 {
-                    Wathcer.Path = ViewModelBase.SharedFSWPath;
-                    Wathcer.IncludeSubdirectories = true;
-                    Wathcer.EnableRaisingEvents = true;
+                    if (isChecked)
+                    {
+                        Wathcer.Path = _vmBase.SharedFSWPath;
+                        Wathcer.IncludeSubdirectories = true;
+                        Wathcer.EnableRaisingEvents = true;
 
-                    // Subscribe to FileSystemWatcher events
-                    Wathcer.Created += OnFileCreated;
-                    Wathcer.Deleted += OnFileDeleted;
-                    Wathcer.Renamed += OnFileRenamed;
+                        Wathcer.Created += OnFileCreated;
 
-                    // Initialize files in the directory
-                    InitializeFiles();
+                        InitializeFiles();
+                    }
+                    else
+                    {
+
+                        Wathcer.EnableRaisingEvents = false;
+                        Wathcer.Created -= OnFileCreated;
+
+                        FilesToCode.Clear();
+                    }
+                    OnProprtyChanged();
                 }
-                else
+                catch (Exception ex)
                 {
-
-                    Wathcer.EnableRaisingEvents = false;
-                    Wathcer.Created -= OnFileCreated;
-                    Wathcer.Deleted -= OnFileDeleted;
-                    Wathcer.Renamed -= OnFileRenamed;
-
-                    FilesToCode.Clear();
+                    WindowInfoAlert wia = new WindowInfoAlert("Proverite da li ste postavili Target folder u postavkama");
+                    wia.ShowDialog();
                 }
-                OnProprtyChanged();
-
             }
         }
         private void InitializeFiles()
         {
             FilesToCode.Clear();
-            foreach (var file in Directory.GetFiles(ViewModelBase.SharedFSWPath))
+            foreach (var file in Directory.GetFiles(_vmBase.SharedFSWPath))
             {
                 FilesToCode.Add(Path.GetFileName(file));
             }
@@ -234,5 +252,7 @@ namespace ZI_CRYPTER.ViewModel
                 FilesToCode.Add(Path.GetFileName(e.FullPath));
             });
         }
+
+       
     }
 }

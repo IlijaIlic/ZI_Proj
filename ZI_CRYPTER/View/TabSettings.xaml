@@ -1,13 +1,12 @@
-﻿<UserControl
-    x:Class="ZI_CRYPTER.View.TabSettings"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:ZI_CRYPTER.View"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
+﻿<UserControl x:Class="ZI_CRYPTER.View.TabSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ZI_CRYPTER.View"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -43,18 +42,20 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Rectangle
-            Grid.RowSpan="12"
-            Grid.ColumnSpan="6"
-            RadiusX="20"
-            RadiusY="20">
+        <Rectangle Grid.RowSpan="12"
+                   Grid.ColumnSpan="6"
+                   RadiusX="20"
+                   RadiusY="20">
 
             <Rectangle.Fill>
 
-                <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                <LinearGradientBrush StartPoint="1,0"
+                                     EndPoint="0,1">
 
-                    <GradientStop Offset="0.0" Color="DarkOrange" />
-                    <GradientStop Offset="0.9" Color="Orange" />
+                    <GradientStop Offset="0.0"
+                                  Color="DarkOrange" />
+                    <GradientStop Offset="0.9"
+                                  Color="Orange" />
 
                 </LinearGradientBrush>
 
@@ -62,71 +63,183 @@
 
         </Rectangle>
 
-        <TextBlock
-            Grid.RowSpan="2"
-            Grid.Column="2"
-            Grid.ColumnSpan="2"
-            Margin="0,10,0,0"
-            HorizontalAlignment="Center"
-            FontFamily="Franklin Gothic Heavy"
-            FontSize="30"
-            Foreground="White"
-            Text="POSTAVKE"
-            TextAlignment="Center"
-            TextWrapping="Wrap" />
+        <TextBlock Grid.RowSpan="2"
+                   Grid.Column="2"
+                   Grid.ColumnSpan="2"
+                   Margin="0,10,0,0"
+                   HorizontalAlignment="Center"
+                   FontFamily="Franklin Gothic Heavy"
+                   FontSize="30"
+                   Foreground="White"
+                   Text="POSTAVKE"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
 
-        <TextBlock
-            Grid.Row="3"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            FontFamily="Franklin Gothic Heavy"
-            FontSize="15"
-            Foreground="White"
-            Text="Izaberite algoritam za kodiranje:"
-            TextAlignment="Center"
-            TextWrapping="Wrap" />
+        <TextBlock Grid.Row="3"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Margin="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontFamily="Franklin Gothic Heavy"
+                   FontSize="15"
+                   Foreground="White"
+                   Text="Izaberite algoritam za kodiranje:"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
 
-        <TextBlock
-            Grid.Row="5"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Margin="0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Center"
-            FontFamily="Franklin Gothic Heavy"
-            FontSize="15"
-            Foreground="White"
-            Text="Unesite kljuc za kodiranje:"
-            TextAlignment="Center"
-            TextWrapping="Wrap" />
+        <TextBlock Grid.Row="5"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Margin="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontFamily="Franklin Gothic Heavy"
+                   FontSize="15"
+                   Foreground="White"
+                   Text="Unesite kljuc za kodiranje:"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
 
-        <ComboBox
-            Grid.Row="3"
-            Grid.Column="4"
-            FontFamily="Franklin Gothic Heavy"
-            FontSize="16"
-            Foreground="White"
-            SelectedValue="{Binding CodeAlg}"
-            SelectedValuePath="Content">
+        <TextBlock Grid.Row="7"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Margin="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontFamily="Franklin Gothic Heavy"
+                   FontSize="15"
+                   Foreground="White"
+                   Text="Izaberite Target putanju:"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
+
+        <TextBlock Grid.Row="9"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="2"
+                   Margin="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   FontFamily="Franklin Gothic Heavy"
+                   FontSize="15"
+                   Foreground="White"
+                   Text="Izaberite X putanju:"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap" />
+
+
+        <Button Grid.Row="7"
+                Grid.Column="3"
+                Grid.ColumnSpan="2"
+                Background="#FF2D2D2D"
+                BorderBrush="Transparent"
+                Command="{Binding ChangeTargetLocationCommand}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Margin="5,0,5,2"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Stretch"
+                                          TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FFFF4D2F" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground"
+                                    Value="#FF4CAF50" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Viewbox HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch">
+
+                <TextBlock FontFamily="Franklin Gothic Heavy"
+                           Foreground="White"
+                           Text="{Binding FSWPath}"
+                           TextWrapping="Wrap" />
+
+            </Viewbox>
+        </Button>
+
+        <Button Grid.Row="9"
+                Grid.Column="3"
+                Grid.ColumnSpan="2"
+                Background="#FF2D2D2D"
+                BorderBrush="Transparent"
+                Command="{Binding ChangeXLocationCommand}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="10">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Margin="5,0,5,2"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Stretch"
+                                          TextElement.Foreground="{TemplateBinding Foreground}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="#FFFF4D2F" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Foreground"
+                                    Value="#FF4CAF50" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Viewbox HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch">
+
+                <TextBlock FontFamily="Franklin Gothic Heavy"
+                           Foreground="White"
+                           Text="{Binding XPath}"
+                           TextWrapping="Wrap" />
+
+            </Viewbox>
+        </Button>
+
+        <ComboBox Grid.Row="3"
+                  Grid.Column="4"
+                  FontFamily="Franklin Gothic Heavy"
+                  FontSize="16"
+                  Foreground="White"
+                  SelectedValue="{Binding CodeAlg}"
+                  SelectedValuePath="Content">
             <ComboBoxItem Content="A5/1" />
             <ComboBoxItem Content="XTEA" />
             <ComboBoxItem Content="XTEA + OFB" />
         </ComboBox>
 
-        <TextBox
-            Grid.Row="5"
-            Grid.Column="3"
-            Grid.ColumnSpan="2"
-            Background="#FF2D2D2D"
-            BorderBrush="Orange"
-            BorderThickness="1"
-            Foreground="White"
-            Style="{StaticResource RoundedTextBox}"
-            Text="{Binding CodeKey}"
-            TextAlignment="Left" />
+        <TextBox Grid.Row="5"
+                 Grid.Column="3"
+                 Grid.ColumnSpan="2"
+                 Background="#FF2D2D2D"
+                 BorderBrush="Orange"
+                 BorderThickness="1"
+                 Foreground="White"
+                 Style="{StaticResource RoundedTextBox}"
+                 Text="{Binding CodeKey}"
+                 TextAlignment="Left" />
 
 
     </Grid>

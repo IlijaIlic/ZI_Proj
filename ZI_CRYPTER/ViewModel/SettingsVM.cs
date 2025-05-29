@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,13 +14,37 @@ namespace ZI_CRYPTER.ViewModel
     {
         private readonly PageModel _pageModel;
         public readonly ViewModelBase _vmBase;
-        public ICommand ChooseOutputLocationCommand { get; set; }
+
+        public ICommand ChangeTargetLocationCommand { get; set; }
+        public ICommand ChangeXLocationCommand { get; set; }
+
 
         public SettingsVM(ViewModelBase vmb)
         {
             _pageModel = new PageModel();
             _vmBase = vmb;
+            ChangeTargetLocationCommand = new RelayCommand(ChangeTargetLocation);
+            ChangeXLocationCommand = new RelayCommand(ChangeXLocation);
 
+        }
+
+        public string XPath
+        {
+            get => _vmBase.SharedXPath;
+            set
+            {
+                _vmBase.SharedXPath = value;
+                OnProprtyChanged(nameof(XPath));
+            }
+        }
+        public string FSWPath
+        {
+            get => _vmBase.SharedFSWPath;
+            set
+            {
+                _vmBase.SharedFSWPath = value;
+                OnProprtyChanged(nameof(FSWPath));
+            }
         }
 
         public string CodeAlg
@@ -39,6 +64,39 @@ namespace ZI_CRYPTER.ViewModel
             {
                 _vmBase.SharedCodeKey = value;
                 OnProprtyChanged(nameof(ViewModelBase));
+            }
+        }
+
+        private void ChangeTargetLocation(object parameter)
+        {
+            var folderDialog = new OpenFolderDialog
+            {
+
+            };
+
+            if (folderDialog.ShowDialog() == true)
+            {
+                var folderName = folderDialog.FolderName;
+                _vmBase.SharedFSWPath = folderName;
+                OnProprtyChanged(nameof(FSWPath));
+
+            }
+
+        }
+
+        private void ChangeXLocation(object parameter)
+        {
+            var folderDialog = new OpenFolderDialog
+            {
+
+            };
+
+            if (folderDialog.ShowDialog() == true)
+            {
+                var folderName = folderDialog.FolderName;
+                _vmBase.SharedXPath = folderName;
+                OnProprtyChanged(nameof(XPath));
+
             }
         }
     }

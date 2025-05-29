@@ -108,10 +108,10 @@ namespace ZI_CRYPTER.ViewModel
             if(DecodeAlg == "XTEA")
             {
                 byte[] keyByte = Encoding.ASCII.GetBytes(DecodeKey);
-                XTEA.DecryptFile(FileToDecode[0], String.Concat(String.Concat(DecodeOutput,"\\") , Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
+                XTEA.DecryptFile(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
         
             }
-            WindowInfoAlert wia = new WindowInfoAlert("💥💥💥");
+            WindowInfoAlert wia = new WindowInfoAlert("Uspesno dekodirano");
             wia.ShowDialog();
         }
         private void ChangeOutputLocation(object parameter)
