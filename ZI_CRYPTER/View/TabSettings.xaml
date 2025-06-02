@@ -42,8 +42,35 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.RowSpan="12"
-                   Grid.ColumnSpan="6"
+        <Rectangle Grid.RowSpan="4"
+                   Grid.Row="2"
+                   Grid.ColumnSpan="4"
+                   Grid.Column="1"
+                   Margin="-30,-10,-30,10"
+                   RadiusX="20"
+                   RadiusY="20">
+
+            <Rectangle.Fill>
+
+                <LinearGradientBrush StartPoint="1,0"
+                                     EndPoint="0,1">
+
+                    <GradientStop Offset="0.0"
+                                  Color="DarkOrange" />
+                    <GradientStop Offset="0.9"
+                                  Color="Orange" />
+
+                </LinearGradientBrush>
+
+            </Rectangle.Fill>
+
+        </Rectangle>
+
+        <Rectangle Grid.RowSpan="4"
+                   Grid.Row="7"
+                   Grid.ColumnSpan="4"
+                   Grid.Column="1"
+                   Margin="-30,-10,-30,-10"
                    RadiusX="20"
                    RadiusY="20">
 
@@ -75,10 +102,10 @@
                    TextAlignment="Center"
                    TextWrapping="Wrap" />
 
-        <TextBlock Grid.Row="3"
+        <TextBlock Grid.Row="2"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
-                   Margin="0"
+                   Margin="0,15,0,-15"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    FontFamily="Franklin Gothic Heavy"
@@ -88,7 +115,7 @@
                    TextAlignment="Center"
                    TextWrapping="Wrap" />
 
-        <TextBlock Grid.Row="5"
+        <TextBlock Grid.Row="4"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
                    Margin="0"
@@ -104,7 +131,7 @@
         <TextBlock Grid.Row="7"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
-                   Margin="0"
+                   Margin="0,15,0,-15"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    FontFamily="Franklin Gothic Heavy"
@@ -117,7 +144,7 @@
         <TextBlock Grid.Row="9"
                    Grid.Column="1"
                    Grid.ColumnSpan="2"
-                   Margin="0"
+                   Margin="0,15,0,-15"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    FontFamily="Franklin Gothic Heavy"
@@ -133,6 +160,7 @@
                 Grid.ColumnSpan="2"
                 Background="#FF2D2D2D"
                 BorderBrush="Transparent"
+                Margin="-60,15,0,-15"
                 Command="{Binding ChangeTargetLocationCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
@@ -178,6 +206,7 @@
                 Grid.ColumnSpan="2"
                 Background="#FF2D2D2D"
                 BorderBrush="Transparent"
+                Margin="-60,15,0,-15"
                 Command="{Binding ChangeXLocationCommand}">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
@@ -218,10 +247,11 @@
             </Viewbox>
         </Button>
 
-        <ComboBox Grid.Row="3"
+        <ComboBox Grid.Row="2"
                   Grid.Column="4"
                   FontFamily="Franklin Gothic Heavy"
                   FontSize="16"
+                  Margin="0,15,0,-15"
                   Foreground="White"
                   SelectedValue="{Binding CodeAlg}"
                   SelectedValuePath="Content">
@@ -230,7 +260,7 @@
             <ComboBoxItem Content="XTEA + OFB" />
         </ComboBox>
 
-        <TextBox Grid.Row="5"
+        <TextBox Grid.Row="4"
                  Grid.Column="3"
                  Grid.ColumnSpan="2"
                  Background="#FF2D2D2D"
