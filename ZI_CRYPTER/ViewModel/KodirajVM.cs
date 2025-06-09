@@ -146,6 +146,14 @@ namespace ZI_CRYPTER.ViewModel
                         wia.ShowDialog();
                     }
                 }
+                else if(CodeAlg == "A5/1")
+                {
+                    A51.InitializeRegistersWithIntKey(123);
+                    uint rez = A51.ProduceKeyBit();
+                    A51.ShiftR1(1);
+                    WindowInfoAlert wia = new WindowInfoAlert(A51.R1[0].ToString());
+                    wia.ShowDialog();
+                }
             }
         }
 
