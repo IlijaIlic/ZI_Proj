@@ -5,14 +5,15 @@
         xmlns:local="clr-namespace:ZI_CRYPTER"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ZI_CRYPTER.ViewModel"
-        Title="WindowMain"
+        Title="CRYPTER"
         Width="1200"
         Height="675"
         AllowsTransparency="True"
         Background="{x:Null}"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        mc:Ignorable="d">
+        mc:Ignorable="d"
+        Icon="/logo.png">
 
     <Window.DataContext>
         <vm:NavigationVM />

@@ -16,7 +16,7 @@ namespace ZI_CRYPTER.Utils
 
 
         // SettingsVM
-        private string _sharedXPath = @"C:\Users\";
+        private string _sharedXPath = "";
         public string SharedXPath
         {
             get => _sharedXPath;
@@ -223,9 +223,21 @@ namespace ZI_CRYPTER.Utils
             }
         }
 
+        //KodirajVM
+        private ObservableCollection<string> _sharedCodedFiles;
+        public ObservableCollection<string> SharedCodedFiles
+        {
+            get => _sharedCodedFiles;
+            set
+            {
+                _sharedCodedFiles = value;
+                OnProprtyChanged(nameof(SharedCodedFiles));
+            }
+        }
+
 
         // KodirajVM
-        private string _codeFSWPath = @"C:\Users\";
+        private string _codeFSWPath = "";
         public string SharedFSWPath
         {
             get => _codeFSWPath;

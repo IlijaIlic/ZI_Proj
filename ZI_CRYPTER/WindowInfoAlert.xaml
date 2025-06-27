@@ -5,14 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:ZI_CRYPTER"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="WindowInfoAlert"
+    Title="Obavestenje!"
     Width="600"
     Height="200"
     AllowsTransparency="True"
     Background="{x:Null}"
     WindowStartupLocation="CenterScreen"
     WindowStyle="None"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Icon="/info.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

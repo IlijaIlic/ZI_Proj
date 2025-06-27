@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.IO;
 using System.Windows;
+using System.Windows.Threading;
 using ZI_CRYPTER.Utils;
 
 namespace ZI_CRYPTER
@@ -15,6 +16,9 @@ namespace ZI_CRYPTER
 
         public static ViewModelBase ViewModelBaseInstance { get; private set; } = new ViewModelBase();
 
+        public static Dispatcher AppDispatcher { get; private set; }
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -23,6 +27,7 @@ namespace ZI_CRYPTER
             ViewModelBaseInstance.SharedFSWChecked = false;
             ViewModelBaseInstance.SharedWatcher = new FileSystemWatcher();
             ViewModelBaseInstance.SharedFilesToCode = new ObservableCollection<string>();
+            ViewModelBaseInstance.SharedCodedFiles = new ObservableCollection<string>();
 
             ViewModelBaseInstance.SharedDecodeOutputPutanja = "C:\\Program Files\\";
             ViewModelBaseInstance.SharedDecodeAlg = "undef";
@@ -40,6 +45,9 @@ namespace ZI_CRYPTER
             ViewModelBaseInstance.SharedReceivePort = "";
             ViewModelBaseInstance.SharedInfoTextRec = "";
             ViewModelBaseInstance.SharedReceiveOutput = "C:\\Program Files\\";
+
+            AppDispatcher = Dispatcher.CurrentDispatcher;
+
         }
     }
 

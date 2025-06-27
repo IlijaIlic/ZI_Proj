@@ -1,14 +1,10 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using Cryptography;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ZI_CRYPTER.Model;
 using ZI_CRYPTER.Utils;
@@ -30,10 +26,10 @@ namespace ZI_CRYPTER.ViewModel
             _pageModel = new PageModel();
             _vmBase = vmb;
 
-            ListenCommand = new RelayCommand(async (param)=>await Osluskuj(param));
+            ListenCommand = new RelayCommand(async (param) => await Osluskuj(param));
             ChangeReceiveLocationCommand = new RelayCommand(ChangeReceiveLocation);
         }
-        
+
         public string ReceivePort
         {
             get => _vmBase.SharedReceivePort;
@@ -107,7 +103,7 @@ namespace ZI_CRYPTER.ViewModel
         // OTVORI FOLDER KAD PRIMI FAJL
         private async Task Osluskuj(object sender)
         {
-            if(ReceiveChecked)
+            if (ReceiveChecked)
             {
                 serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -152,7 +148,7 @@ namespace ZI_CRYPTER.ViewModel
                     OnProprtyChanged(nameof(InfoTextRec));
                 }
             }
-            
+
         }
 
         private void ChangeReceiveLocation(object parameter)
@@ -183,12 +179,14 @@ namespace ZI_CRYPTER.ViewModel
                 {
                     string fileName = reader.ReadString();
                     long fileSize = reader.ReadInt64();
+                    int hashLength = reader.ReadInt32();
+                    byte[] hash = reader.ReadBytes(hashLength);
 
-                    InfoTextRec = $"Preuzimanje fajla: {fileName} ({fileSize} bytes)";
+                    InfoTextRec = $"Preuzimanje fajla: {fileName} ({fileSize} bajta)";
                     OnProprtyChanged(nameof(InfoTextRec));
 
 
-                    string savePath = Path.Combine(Directory.GetCurrentDirectory(), "Received_" + fileName);
+                    string savePath = Path.Combine(ReceiveOutput, "Primljeno - kodirano - " + fileName);
                     using (FileStream fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write))
                     {
                         byte[] buffer = new byte[4096];
@@ -207,22 +205,48 @@ namespace ZI_CRYPTER.ViewModel
                     //InfoTextRec = $"Fajl {fileName} uspešno preuzet.";
                     InfoTextRec = savePath;
                     OnProprtyChanged(nameof(InfoTextRec));
+                    writer.Write("Fajl je uspešno preuzet.");
 
-                    if(ReceiveAlg == "XTEA" && ReceiveKey != "")
+                    byte[] noviHash = BLAKE.ComputeHash(Path.Combine(ReceiveOutput, "Primljeno - kodirano - " + fileName));
+
+                    if (!noviHash.SequenceEqual(hash))
                     {
-                        byte[] keyByte = Encoding.ASCII.GetBytes(ReceiveKey);
-                        XTEA.DecryptFile("Received_" + fileName, Path.Combine(ReceiveOutput, fileName), keyByte);
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            WindowInfoAlert wia = new WindowInfoAlert("Blake hash error");
+                            wia.ShowDialog();
+                        });
+                        return;
                     }
 
-                    writer.Write("Fajl je uspešno preuzet.");
+                    byte[] keyByte = Encoding.ASCII.GetBytes(ReceiveKey);
+                    if (ReceiveAlg == "XTEA" && ReceiveKey != "")
+                    {
+                        XTEA.DecryptFile(Path.Combine(ReceiveOutput, "Primljeno - kodirano - " + fileName), Path.Combine(ReceiveOutput, "Primljeno - dekodirano - " + fileName), keyByte);
+                    }
+                    else if (ReceiveAlg == "A5/1" && ReceiveKey != "")
+                    {
+                        A51Faster.useA51((Path.Combine(ReceiveOutput, "Primljeno - kodirano - " + fileName)), Path.Combine(ReceiveOutput, "Primljeno - dekodirano - " + fileName), keyByte);
+                    }
+                    else if (ReceiveAlg == "XTEA + OFB" && ReceiveKey != "")
+                    {
+                        XTEA.OFB((Path.Combine(ReceiveOutput, "Primljeno - kodirano - " + fileName)), Path.Combine(ReceiveOutput, "Primljeno - dekodirano - " + fileName), keyByte, Encoding.ASCII.GetBytes("asdfasdf"));
+                    }
+
                 }
             }
             catch (Exception ex)
             {
-                InfoTextRec = $"Error handling client: {ex.Message}";
-                OnProprtyChanged(nameof(InfoTextRec));
-
-
+                if (ex is UnauthorizedAccessException)
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Za zeljeni output direktorijum su potrebne privilegije administratora!");
+                    wia.ShowDialog();
+                }
+                else
+                {
+                    InfoTextRec = $"Greska: {ex.Message}";
+                    OnProprtyChanged(nameof(InfoTextRec));
+                }
             }
             finally
             {

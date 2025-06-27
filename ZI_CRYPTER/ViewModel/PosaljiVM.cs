@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ZI_CRYPTER.Model;
 using ZI_CRYPTER.Utils;
+using Cryptography;
 
 namespace ZI_CRYPTER.ViewModel
 {
@@ -82,15 +83,15 @@ namespace ZI_CRYPTER.ViewModel
             }
         }
 
-       public ObservableCollection<string> FileToSend
-       {
+        public ObservableCollection<string> FileToSend
+        {
             get => _vmBase.SharedFileToSend;
             set
             {
                 _vmBase.SharedFileToSend = value;
                 OnProprtyChanged(nameof(SharedFileToSend));
             }
-       }
+        }
 
         public string InfoText
         {
@@ -107,50 +108,64 @@ namespace ZI_CRYPTER.ViewModel
 
         private async Task Posalji(object sender)
         {
-            try
+            await Task.Run(async () =>
             {
-                using (Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                try
                 {
-                    string ip = String.Concat(SendIP1, ".", SendIP2, ".", SendIP3, ".", SendIP4);
-                    await clientSocket.ConnectAsync(ip, Int32.Parse(SendPort));
-
-                    using (NetworkStream networkStream = new NetworkStream(clientSocket))
-                    using (BinaryReader reader = new BinaryReader(networkStream))
-                    using (BinaryWriter writer = new BinaryWriter(networkStream))
+                    using (Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
                     {
-                        string filePath = FileToSend[0];
-                        string fileName = Path.GetFileName(filePath);
-                        long fileSize = new FileInfo(filePath).Length;
+                        string ip = String.Concat(SendIP1, ".", SendIP2, ".", SendIP3, ".", SendIP4);
+                        await clientSocket.ConnectAsync(ip, Int32.Parse(SendPort));
 
-                        // Слање метаподатака (име фајла и величина) treba i hes 
-                        writer.Write(fileName);
-                        writer.Write(fileSize);
-
-                        // Слање фајла у блоковима
-                        using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                        using (NetworkStream networkStream = new NetworkStream(clientSocket))
+                        using (BinaryReader reader = new BinaryReader(networkStream))
+                        using (BinaryWriter writer = new BinaryWriter(networkStream))
                         {
-                            byte[] buffer = new byte[4096];
-                            int bytesRead;
+                            string filePath = FileToSend[0];
+                            string fileName = Path.GetFileName(filePath);
+                            long fileSize = new FileInfo(filePath).Length;
+                            byte[] hash = BLAKE.ComputeHash(filePath);
 
-                            while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                            // Слање метаподатака (име фајла и величина) треба и хеш
+
+                            writer.Write(fileName);
+                            writer.Write(fileSize);
+                            writer.Write(hash.Length);
+                            writer.Write(hash);
+
+                            // Слање фајла у блоковима
+                            using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                             {
-                                await networkStream.WriteAsync(buffer, 0, bytesRead);
+                                byte[] buffer = new byte[4096];
+                                int bytesRead;
+
+                                while ((bytesRead = await fileStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    await networkStream.WriteAsync(buffer, 0, bytesRead);
+                                }
                             }
+
+                            // Примање потврде са сервера
+
+                            string response = await Task.Run(() => reader.ReadString());
+                            Console.WriteLine("response");
+
+                            InfoText = $"Server response: {response}";
+                            Console.WriteLine("InfoText");
+
+                            OnProprtyChanged(nameof(InfoText));
+                            Console.WriteLine("OnProprtyChanged");
+
                         }
-
-                        // Примање потврде са сервера
-                        string response = reader.ReadString();
-                        InfoText = $"Server response: {response}";
-                        OnProprtyChanged(nameof(InfoText));
-
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                InfoText = $"Error: {ex.Message}";
-                OnProprtyChanged(nameof(InfoText));
-            }
+                catch (Exception ex)
+                {
+                    InfoText = $"Error: {ex.Message}";
+                    OnProprtyChanged(nameof(InfoText));
+                }
+            });
+
         }
 
         private void AddFileToSend(object parameter)
@@ -166,9 +181,9 @@ namespace ZI_CRYPTER.ViewModel
             OnProprtyChanged();
         }
 
-   
+
         #endregion
 
-        
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Cryptography;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,7 +33,7 @@ namespace ZI_CRYPTER.ViewModel
             AddFileToDecodeCommand = new RelayCommand(AddFileToDecode);
             DecodeCommand = new RelayCommand(Decode);
 
-            }
+        }
 
         public string DecodeOutput
         {
@@ -83,36 +84,99 @@ namespace ZI_CRYPTER.ViewModel
 
         private void Decode(object parameter)
         {
-            if (FileToDecode.Count == 0)
+            //WindowInfoAlert wia12 = new WindowInfoAlert(BLAKE.HashToHexString("hella"));
+            //wia12.Show();
+            Task.Factory.StartNew(() =>
             {
-                WindowInfoAlert wia1 = new WindowInfoAlert("Niste odabrali fajl za dekodiranje!");
 
-                wia1.ShowDialog();
-                return;
-            }
-            if (DecodeAlg == "undef")
-            {
-                WindowInfoAlert wia2 = new WindowInfoAlert("Niste odabrali algoritam za dekodiranje");
+                if (FileToDecode.Count == 0)
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        WindowInfoAlert wia1 = new WindowInfoAlert("Niste odabrali fajl za dekodiranje!");
+                        wia1.Owner = App.Current.MainWindow;
 
-                wia2.ShowDialog();
-                return;
-            }
-            if (DecodeKey == "")
-            {
-                WindowInfoAlert wia3 = new WindowInfoAlert("Niste uneli kljuc za dekodiranje!");
+                        wia1.ShowDialog();
+                    });
 
-                wia3.ShowDialog();
-                return;
-            }
-            
-            if(DecodeAlg == "XTEA")
-            {
-                byte[] keyByte = Encoding.ASCII.GetBytes(DecodeKey);
-                XTEA.DecryptFile(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
-        
-            }
-            WindowInfoAlert wia = new WindowInfoAlert("Uspesno dekodirano");
-            wia.ShowDialog();
+                    return;
+                }
+                if (DecodeAlg == "undef")
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        WindowInfoAlert wia2 = new WindowInfoAlert("Niste odabrali algoritam za dekodiranje");
+                        wia2.Owner = App.Current.MainWindow;
+
+                        wia2.ShowDialog();
+                    });
+
+                    return;
+                }
+                if (DecodeKey == "")
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        WindowInfoAlert wia3 = new WindowInfoAlert("Niste uneli kljuc za dekodiranje!");
+                        wia3.Owner = App.Current.MainWindow;
+
+                        wia3.ShowDialog();
+                    });
+
+                    return;
+                }
+                try
+                {
+
+                    byte[] keyByte = Encoding.ASCII.GetBytes(DecodeKey);
+
+                    if (DecodeAlg == "XTEA")
+                    {
+                        XTEA.DecryptFile(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
+                    }
+                    else if (DecodeAlg == "A5/1")
+                    {
+                        A51Faster.useA51(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
+                    }
+                    else if (DecodeAlg == "XTEA + OFB")
+                    {
+                        XTEA.OFB(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte, Encoding.ASCII.GetBytes("asdfasdf"));
+                    }
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        WindowInfoAlert wia = new WindowInfoAlert("Uspesno dekodirano!");
+                        wia.ShowDialog();
+                    });
+
+                }
+                catch (Exception exce)
+                {
+                    if (exce is UnauthorizedAccessException)
+                    {
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            WindowInfoAlert wia = new WindowInfoAlert("Za zeljeni output direktorijum su potrebne privilegije administratora!");
+                            wia.Owner = App.Current.MainWindow;
+
+                            wia.ShowDialog();
+                        });
+
+                    }
+                    else
+                    {
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+
+                            WindowInfoAlert wia = new WindowInfoAlert(exce.Message);
+
+                            wia.Owner = App.Current.MainWindow;
+                            wia.ShowDialog();
+                        });
+
+                    }
+                }
+            });
+
         }
         private void ChangeOutputLocation(object parameter)
         {
@@ -131,6 +195,6 @@ namespace ZI_CRYPTER.ViewModel
 
         }
 
-       
+
     }
 }

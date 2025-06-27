@@ -91,7 +91,7 @@
                       Margin="0,30"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding FilesToCode}">
+            <ItemsControl ItemsSource="{Binding CodedFiles}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Margin="10"

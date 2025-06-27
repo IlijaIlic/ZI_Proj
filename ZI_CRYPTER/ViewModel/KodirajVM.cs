@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Threading;
 using ZI_CRYPTER.Model;
 using ZI_CRYPTER.Utils;
 
@@ -100,63 +101,182 @@ namespace ZI_CRYPTER.ViewModel
             get => _vmBase.SharedFilesToCode;
         }
 
+        public ObservableCollection<string> CodedFiles
+        {
+            get => _vmBase.SharedCodedFiles;
+
+        }
+
 
         private void Code(object parameter)
         {
+            Task.Factory.StartNew(() =>
+            {
+                if (Checker())
+                {
+
+                    byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
+                    try
+                    {
+                        if (!FSWCheck)
+                            ObicnoKodiranje(keyBytes);
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                WindowInfoAlert wia = new WindowInfoAlert("Morate iskljuciti FSW!");
+                                wia.Owner = App.Current.MainWindow;
+
+                                wia.ShowDialog();
+                            });
+                            return;
+                        }
+
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            WindowInfoAlert wia = new WindowInfoAlert("Uspesno kodirano :D");
+                            wia.Owner = App.Current.MainWindow;
+
+                            wia.ShowDialog();
+                        });
+
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is UnauthorizedAccessException)
+                        {
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                WindowInfoAlert wia = new WindowInfoAlert("Za zeljeni output direktorijum su potrebne privilegije administratora!");
+                                wia.Owner = App.Current.MainWindow;
+
+                                wia.ShowDialog();
+                            });
+                        }
+                        else
+                        {
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                WindowInfoAlert wia = new WindowInfoAlert(ex.Message);
+                                wia.Owner = App.Current.MainWindow;
+
+                                wia.ShowDialog();
+                            });
+                        }
+
+                    }
+                }
+
+            });
+        }
+
+        private bool Checker()
+        {
             if (CodeAlg == "undef")
             {
-                WindowInfoAlert wia = new WindowInfoAlert("Morate odabrati algoritam za kodiranje u postavkama!");
-                wia.ShowDialog();
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Morate odabrati algoritam za kodiranje u postavkama!");
+                    wia.Owner = App.Current.MainWindow;
+                    wia.ShowDialog();
+                    return false;
+                });
             }
             else if (CodeKey == "")
             {
-                WindowInfoAlert wia = new WindowInfoAlert("Morate uneti kljuc za kodiranje u postavkama!");
-                wia.ShowDialog();
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Morate uneti kljuc za kodiranje u postavkama!");
+                    wia.Owner = App.Current.MainWindow;
+
+                    wia.ShowDialog();
+
+                    return false;
+                });
 
             }
             else if (FilesToCode.Count == 0)
             {
-                WindowInfoAlert wia = new WindowInfoAlert("Nema fajlova za kodiranje!");
-                wia.ShowDialog();
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Nema fajlova za kodiranje!");
+                    wia.Owner = App.Current.MainWindow;
+
+                    wia.ShowDialog();
+                    return false;
+                });
             }
-            else
+            else if (XPath == "")
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Morate podesiti output lokaciju!");
+                    wia.Owner = App.Current.MainWindow;
+
+                    wia.ShowDialog();
+                    return false;
+                });
+            }
+            else if (FSWCheck == true && FSWPath == "")
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Morate podesiti folder za FSW!");
+                    wia.Owner = App.Current.MainWindow;
+
+                    wia.ShowDialog();
+                    return false;
+                });
+            }
+            return true;
+        }
+
+        private void FSWKodiranje(byte[] keyBytes, string filePath, string fileName)
+        {
+            if (CodeAlg == "XTEA")
             {
 
-                if (CodeAlg == "XTEA")
-                {
+                XTEA.EncryptFile(filePath, Path.Combine(XPath, "enc - " + fileName), keyBytes);
 
-                    byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
+            }
+            else if (CodeAlg == "A5/1")
+            {
 
-                    if (FSWCheck)
-                    {
-                        foreach (var file in FilesToCode)
-                        {
-                            XTEA.EncryptFile(Path.Combine(FSWPath, file), Path.Combine(XPath,"enc - " + file), keyBytes);
-                        }
-                        WindowInfoAlert wia = new WindowInfoAlert("Uspesno kodirano :D");
-                        wia.ShowDialog();
-                    }
-                    else
-                    {
-                        foreach (var file in FilesToCode)
-                        {
-                            XTEA.EncryptFile(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes);
-                        }
-                        WindowInfoAlert wia = new WindowInfoAlert("Uspesno kodirano :D");
-                        wia.ShowDialog();
-                    }
-                }
-                else if(CodeAlg == "A5/1")
-                {
-                    A51.InitializeRegistersWithIntKey(123);
-                    uint rez = A51.ProduceKeyBit();
-                    A51.ShiftR1(1);
-                    WindowInfoAlert wia = new WindowInfoAlert(A51.R1[0].ToString());
-                    wia.ShowDialog();
-                }
+                A51Faster.useA51(filePath, Path.Combine(XPath, "enc - " + fileName), keyBytes);
+
+            }
+            else if (CodeAlg == "XTEA + OFB")
+            {
+
+                XTEA.OFB(filePath, Path.Combine(XPath, "enc - " + fileName), keyBytes, Encoding.ASCII.GetBytes("asdfasdf"));
+
             }
         }
 
+        private void ObicnoKodiranje(byte[] keyBytes)
+        {
+            if (CodeAlg == "XTEA")
+            {
+                foreach (var file in FilesToCode)
+                {
+                    XTEA.EncryptFile(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes);
+                }
+            }
+            else if (CodeAlg == "A5/1")
+            {
+                foreach (var file in FilesToCode)
+                {
+                    A51Faster.useA51(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes);
+                }
+            }
+            else if (CodeAlg == "XTEA + OFB")
+            {
+                foreach (var file in FilesToCode)
+                {
+                    XTEA.OFB(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes, Encoding.ASCII.GetBytes("asdfasdf"));
+                }
+            }
+        }
 
         private void RemoveAllFiles(object parameter)
         {
@@ -169,6 +289,7 @@ namespace ZI_CRYPTER.ViewModel
             else
             {
                 FilesToCode.Clear();
+                CodedFiles.Clear();
 
             }
             OnProprtyChanged();
@@ -185,6 +306,7 @@ namespace ZI_CRYPTER.ViewModel
             else
             {
 
+                CodedFiles.Clear();
                 Microsoft.Win32.OpenFileDialog ofd = new Microsoft.Win32.OpenFileDialog();
                 ofd.Filter = "All files (*.*)|*.*";
                 ofd.Multiselect = true;
@@ -196,6 +318,13 @@ namespace ZI_CRYPTER.ViewModel
                             FilesToCode.Add(file);
                     }
                 }
+
+
+                foreach (var item in FilesToCode)
+                {
+                    CodedFiles.Add(item);
+                }
+
                 OnProprtyChanged();
             }
         }
@@ -208,13 +337,27 @@ namespace ZI_CRYPTER.ViewModel
                 {
                     if (isChecked)
                     {
+                        if (!Checker())
+                        {
+                            isChecked = false;
+                            return;
+                        }
+                        FilesToCode.Clear();
+                        CodedFiles.Clear();
+
+                        byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
+
                         Wathcer.Path = _vmBase.SharedFSWPath;
                         Wathcer.IncludeSubdirectories = true;
                         Wathcer.EnableRaisingEvents = true;
 
                         Wathcer.Created += OnFileCreated;
 
-                        InitializeFiles();
+                        Task.Factory.StartNew(() =>
+                        {
+                            InitializeFiles();
+                            codeSlowFiles(keyBytes);
+                        });
                     }
                     else
                     {
@@ -228,8 +371,49 @@ namespace ZI_CRYPTER.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    WindowInfoAlert wia = new WindowInfoAlert("Proverite da li ste postavili Target folder u postavkama");
+
+                    WindowInfoAlert wia = new WindowInfoAlert(ex.Message);
                     wia.ShowDialog();
+                    FSWCheck = false;
+                    OnProprtyChanged();
+
+                }
+            }
+        }
+
+        private void codeSlowFiles(byte[] keyBytes)
+        {
+            while (FilesToCode.ToList().Count > 0)
+            {
+                foreach (var file in FilesToCode.ToList())
+                {
+                    try
+                    {
+                        FilesToCode.Remove(file);
+                        string name = Path.GetFileName(file);
+                        FSWKodiranje(keyBytes, file, name);
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            CodedFiles.Add(name);
+                        });
+                    }
+                    catch (Exception exce)
+                    {
+                        if (exce is not UnauthorizedAccessException)
+                        {
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                WindowInfoAlert wia = new WindowInfoAlert(exce.Message);
+                                wia.Owner = App.Current.MainWindow;
+                                wia.ShowDialog();
+                            });
+                            FilesToCode.Add(file);
+                        }
+                        else
+                        {
+                            FilesToCode.Remove(file);
+                        }
+                    }
                 }
             }
         }
@@ -238,29 +422,50 @@ namespace ZI_CRYPTER.ViewModel
             FilesToCode.Clear();
             foreach (var file in Directory.GetFiles(_vmBase.SharedFSWPath))
             {
-                FilesToCode.Add(Path.GetFileName(file));
+                FilesToCode.Add(Path.GetFullPath(file));
             }
         }
 
         private void OnFileCreated(object sender, FileSystemEventArgs e)
         {
-            App.Current.Dispatcher.Invoke(() => FilesToCode.Add(Path.GetFileName(e.FullPath)));
-        }
-
-        private void OnFileDeleted(object sender, FileSystemEventArgs e)
-        {
-            App.Current.Dispatcher.Invoke(() => FilesToCode.Remove(Path.GetFileName(e.FullPath)));
-        }
-
-        private void OnFileRenamed(object sender, RenamedEventArgs e)
-        {
-            App.Current.Dispatcher.Invoke(() =>
+            Task.Factory.StartNew(() =>
             {
-                FilesToCode.Remove(Path.GetFileName(e.OldFullPath));
-                FilesToCode.Add(Path.GetFileName(e.FullPath));
-            });
-        }
+                App.Current.Dispatcher.Invoke(() => FilesToCode.Add(Path.GetFileName(e.FullPath)));
 
-       
+                byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
+
+                try
+                {
+                    string name = Path.GetFileName(e.FullPath);
+                    FSWKodiranje(keyBytes, e.FullPath, name);
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        CodedFiles.Add(name);
+                    });
+
+
+                    codeSlowFiles(keyBytes);
+
+                }
+                catch (Exception exce)
+                {
+                    if (exce is UnauthorizedAccessException)
+                    {
+                        FilesToCode.Add(e.FullPath);
+                    }
+                    else
+                    {
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            WindowInfoAlert wia = new WindowInfoAlert(exce.Message);
+                            wia.Owner = App.Current.MainWindow;
+                            wia.ShowDialog();
+                        });
+                    }
+                }
+            });
+
+
+        }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 namespace ZI_CRYPTER.Utils
 {
     public static class XTEA
@@ -35,7 +36,7 @@ namespace ZI_CRYPTER.Utils
         {
             ValidateKey(key);
 
-            int blockSize = 8; // XTEA works on 64-bit blocks (8 bytes)
+            int blockSize = 8;
             int paddedSize = ((data.Length + blockSize - 1) / blockSize) * blockSize;
             byte[] paddedData = new byte[paddedSize];
             Array.Copy(data, paddedData, data.Length);
@@ -113,8 +114,40 @@ namespace ZI_CRYPTER.Utils
         {
             if (key.Length != 16)
             {
-                throw new ArgumentException("Key must be 16 bytes (128 bits) long.");
+                throw new ArgumentException("Kljuc mora imati 128 bita.");
             }
+        }
+
+        public static void OFB(string inputFilePath, string outputFilePath, byte[] key, byte[] iv)
+        {
+
+            ValidateKey(key);
+            byte[] data = File.ReadAllBytes(inputFilePath);
+            if (iv.Length != 8) throw new ArgumentException("IV must be 8 bytes.");
+
+            byte[] encryptedData = new byte[data.Length];
+            byte[] feedback = new byte[8];
+            Array.Copy(iv, feedback, 8);
+
+            int numBlocks = (data.Length + 7) / 8;
+
+            for (int i = 0; i < numBlocks; i++)
+            {
+                uint v0 = BitConverter.ToUInt32(feedback, 0);
+                uint v1 = BitConverter.ToUInt32(feedback, 4);
+                EncryptBlock(ref v0, ref v1, key);
+
+                Array.Copy(BitConverter.GetBytes(v0), 0, feedback, 0, 4);
+                Array.Copy(BitConverter.GetBytes(v1), 0, feedback, 4, 4);
+
+                int blockSize = Math.Min(8, data.Length - (i * 8));
+                for (int j = 0; j < blockSize; j++)
+                {
+                    encryptedData[i * 8 + j] = (byte)(data[i * 8 + j] ^ feedback[j]);
+                }
+            }
+
+            File.WriteAllBytes(outputFilePath, encryptedData);
         }
     }
 }

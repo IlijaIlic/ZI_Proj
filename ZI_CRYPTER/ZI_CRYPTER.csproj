@@ -13,7 +13,9 @@
     <None Remove="deleteorange.png" />
     <None Remove="exit.png" />
     <None Remove="folder.png" />
+    <None Remove="info.png" />
     <None Remove="locked.png" />
+    <None Remove="logo.png" />
     <None Remove="recivefile.png" />
     <None Remove="send.png" />
     <None Remove="settings.png" />
@@ -27,7 +29,9 @@
     <Resource Include="deleteorange.png" />
     <Resource Include="exit.png" />
     <Resource Include="folder.png" />
+    <Resource Include="info.png" />
     <Resource Include="locked.png" />
+    <Resource Include="logo.png" />
     <Resource Include="recivefile.png" />
     <Resource Include="send.png" />
     <Resource Include="settings.png" />

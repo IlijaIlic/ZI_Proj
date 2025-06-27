@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,9 @@ namespace ZI_CRYPTER.Utils
         public static uint[] R2 = new uint[22]; // bit za majority vote 10 // vrednost prvog bita xor bitova 20, 21
         public static uint[] R3 = new uint[23]; // bit za majority vote 10 // vrednost prvog bita xor bitova 7, 20, 21, 22
 
-        public static void InitializeRegistersWithULongKey(ulong key)
+        public static int warmUpRounds = 100;
+
+        public static void ClearRegisters()
         {
             for (int i = 0; i < 23; i++)
             {
@@ -28,6 +31,11 @@ namespace ZI_CRYPTER.Utils
                     if (i < 19) R1[i] = 0;
                 }
             }
+        }
+
+        public static void InitializeRegistersWithULongKey(ulong key)
+        {
+            ClearRegisters();
 
             uint keyBit;
 
@@ -35,9 +43,6 @@ namespace ZI_CRYPTER.Utils
             {
                 keyBit = (uint)((key >> i) & 1);
 
-                R1[0] ^= keyBit;
-                R2[0] ^= keyBit;
-                R3[0] ^= keyBit;
 
                 uint zeroBitR1 = ProduceFirstBitR1();
                 uint zeroBitR2 = ProduceFirstBitR2();
@@ -47,9 +52,48 @@ namespace ZI_CRYPTER.Utils
                 ShiftR2(zeroBitR2);
                 ShiftR3(zeroBitR3);
 
+
+                R1[0] ^= keyBit;
+                R2[0] ^= keyBit;
+                R3[0] ^= keyBit;
             }
 
+            for (int i = 0; i < warmUpRounds; i++)
+            {
+                ClockForward();
+            }
         }
+
+        public static void InitializeRegistersWithKeyBytes(byte[] keyBytes)
+        {
+            ClearRegisters();
+
+            foreach (byte b in keyBytes)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    uint keyBit = (uint)((b >> i) & 1);
+
+                    uint zeroBitR1 = ProduceFirstBitR1();
+                    uint zeroBitR2 = ProduceFirstBitR2();
+                    uint zeroBitR3 = ProduceFirstBitR3();
+
+                    ShiftR1(zeroBitR1);
+                    ShiftR2(zeroBitR2);
+                    ShiftR3(zeroBitR3);
+
+                    R1[0] ^= keyBit;
+                    R2[0] ^= keyBit;
+                    R3[0] ^= keyBit;
+                }
+            }
+
+            for (int i = 0; i < warmUpRounds; i++)
+            {
+                ClockForward();
+            }
+        }
+
 
         public static void InitializeRegistersWithStringKey(string key)
         {
@@ -59,7 +103,7 @@ namespace ZI_CRYPTER.Utils
                 if (i < 22)
                 {
                     R2[i] = 0;
-                    if (i < 19)  R1[i] = 0;
+                    if (i < 19) R1[i] = 0;
                 }
             }
 
@@ -99,20 +143,17 @@ namespace ZI_CRYPTER.Utils
 
         public static uint ProduceFirstBitR1()
         {
-            R1[0] = R1[13] ^ R1[16] ^ R1[17] ^ R1[18];
-            return R1[0];
+            return R1[13] ^ R1[16] ^ R1[17] ^ R1[18]; ;
         }
 
         public static uint ProduceFirstBitR2()
         {
-            R2[0] = R2[20] ^ R2[21];
-            return R2[0];
+            return R2[20] ^ R2[21];
         }
 
         public static uint ProduceFirstBitR3()
         {
-            R3[0] = R3[7] ^ R3[20] ^ R3[21] ^ R3[22];
-            return R3[0];
+            return R3[7] ^ R3[20] ^ R3[21] ^ R3[22];
         }
 
         public static uint ProduceKeyBit()
@@ -120,7 +161,7 @@ namespace ZI_CRYPTER.Utils
             return R1[18] ^ R2[21] ^ R3[22];
         }
 
-        public static void ClockForward()
+        public static uint ClockForward()
         {
             uint majBit = (R1[8] + R2[10] + R3[10]) > 1 ? 1u : 0u;
 
@@ -143,6 +184,44 @@ namespace ZI_CRYPTER.Utils
             }
 
             uint keyBit = ProduceKeyBit();
+
+            return keyBit;
+        }
+
+        public static void useA51(string inputFilePath, string outputFilePath, byte[] key)
+        {
+            ValidateKeyA51(key);
+
+            byte[] fileData = File.ReadAllBytes(inputFilePath);
+            byte[] newData = new byte[fileData.Length];
+
+            InitializeRegistersWithKeyBytes(key);
+
+            for (int i = 0; i < fileData.Length; i++)
+            {
+                byte keystreamByte = 0;
+
+                for (int bit = 0; bit < 8; bit++)
+                {
+                    uint keyBit = ClockForward(); 
+                    keystreamByte |= (byte)(keyBit << bit);
+                }
+
+                newData[i] = (byte)(fileData[i] ^ keystreamByte);
+            }
+
+            File.WriteAllBytes(outputFilePath, newData);
+        }
+
+
+        public static void ValidateKeyA51(byte[] key)
+        {
+            // TODO
+            if (key.Length > 8)
+            {
+                throw new Exception("Kljuc mora imati 64 bita.");
+            }
+            Console.WriteLine("TODO");
         }
     }
 }
