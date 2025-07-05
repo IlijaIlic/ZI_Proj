@@ -179,8 +179,8 @@ namespace ZI_CRYPTER.ViewModel
                     WindowInfoAlert wia = new WindowInfoAlert("Morate odabrati algoritam za kodiranje u postavkama!");
                     wia.Owner = App.Current.MainWindow;
                     wia.ShowDialog();
-                    return false;
                 });
+                return false;
             }
             else if (CodeKey == "")
             {
@@ -191,21 +191,21 @@ namespace ZI_CRYPTER.ViewModel
 
                     wia.ShowDialog();
 
-                    return false;
                 });
+                return false;
 
             }
-            else if (FilesToCode.Count == 0)
-            {
-                App.Current.Dispatcher.Invoke(() =>
-                {
-                    WindowInfoAlert wia = new WindowInfoAlert("Nema fajlova za kodiranje!");
-                    wia.Owner = App.Current.MainWindow;
+            //else if (FilesToCode.Count == 0)
+            //{
+            //    App.Current.Dispatcher.Invoke(() =>
+            //    {
+            //        WindowInfoAlert wia = new WindowInfoAlert("Nema fajlova za kodiranje!");
+            //        wia.Owner = App.Current.MainWindow;
 
-                    wia.ShowDialog();
-                    return false;
-                });
-            }
+            //        wia.ShowDialog();
+            //        return false;
+            //    });
+            //}
             else if (XPath == "")
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -214,8 +214,8 @@ namespace ZI_CRYPTER.ViewModel
                     wia.Owner = App.Current.MainWindow;
 
                     wia.ShowDialog();
-                    return false;
                 });
+                return false;
             }
             else if (FSWCheck == true && FSWPath == "")
             {
@@ -225,8 +225,8 @@ namespace ZI_CRYPTER.ViewModel
                     wia.Owner = App.Current.MainWindow;
 
                     wia.ShowDialog();
-                    return false;
                 });
+                return false;
             }
             return true;
         }
@@ -236,7 +236,7 @@ namespace ZI_CRYPTER.ViewModel
             if (CodeAlg == "XTEA")
             {
 
-                XTEA.EncryptFile(filePath, Path.Combine(XPath, "enc - " + fileName), keyBytes);
+                XTEA.EncryptFileParallelBuffered(filePath, Path.Combine(XPath, "enc - " + fileName), keyBytes);
 
             }
             else if (CodeAlg == "A5/1")
@@ -259,7 +259,7 @@ namespace ZI_CRYPTER.ViewModel
             {
                 foreach (var file in FilesToCode)
                 {
-                    XTEA.EncryptFile(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes);
+                    XTEA.EncryptFileParallelBuffered(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes);
                 }
             }
             else if (CodeAlg == "A5/1")
@@ -339,7 +339,12 @@ namespace ZI_CRYPTER.ViewModel
                     {
                         if (!Checker())
                         {
-                            isChecked = false;
+                            App.Current.Dispatcher.Invoke(() =>
+                            {
+                                FSWCheck = false;
+                                OnProprtyChanged(nameof(FSWCheck));
+                            });
+
                             return;
                         }
                         FilesToCode.Clear();
@@ -444,7 +449,6 @@ namespace ZI_CRYPTER.ViewModel
                     });
 
 
-                    codeSlowFiles(keyBytes);
 
                 }
                 catch (Exception exce)
@@ -452,6 +456,7 @@ namespace ZI_CRYPTER.ViewModel
                     if (exce is UnauthorizedAccessException)
                     {
                         FilesToCode.Add(e.FullPath);
+                        codeSlowFiles(keyBytes);
                     }
                     else
                     {

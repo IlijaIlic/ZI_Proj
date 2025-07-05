@@ -339,6 +339,17 @@ namespace ZI_CRYPTER.Utils
             }
         }
 
+        // DekodirajVM
+        private string _decodedFileName;
+        public string SharedDecodedFileName
+        {
+            get => _decodedFileName;
+            set
+            {
+                _decodedFileName = value;
+                OnProprtyChanged(nameof(SharedDecodedFileName));
+            }
+        }
 
         // DekodirajVM
         private string _decodeOutputPutanja;

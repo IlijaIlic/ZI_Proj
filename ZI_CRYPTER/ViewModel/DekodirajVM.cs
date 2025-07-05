@@ -35,6 +35,16 @@ namespace ZI_CRYPTER.ViewModel
 
         }
 
+        public string DecodedFileName
+        {
+            get => _vmBase.SharedDecodedFileName;
+            set
+            {
+                _vmBase.SharedDecodedFileName = value;
+                OnProprtyChanged(nameof(ViewModelBase));
+            }
+        }
+
         public string DecodeOutput
         {
             get => _vmBase.SharedDecodeOutputPutanja;
@@ -127,20 +137,31 @@ namespace ZI_CRYPTER.ViewModel
                 }
                 try
                 {
-
+                    string output;
                     byte[] keyByte = Encoding.ASCII.GetBytes(DecodeKey);
+
+
+                    if (DecodedFileName == "")
+                        output = Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - ")));
+
+                    else
+                    {
+                        string ext = Path.GetExtension(FileToDecode[0]);
+                        output = Path.Combine(DecodeOutput, DecodedFileName + ext);
+                    }
+
 
                     if (DecodeAlg == "XTEA")
                     {
-                        XTEA.DecryptFile(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
+                        XTEA.DecryptFileParallelBuffered(FileToDecode[0], output, keyByte);
                     }
                     else if (DecodeAlg == "A5/1")
                     {
-                        A51Faster.useA51(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte);
+                        A51Faster.useA51(FileToDecode[0], output, keyByte);
                     }
                     else if (DecodeAlg == "XTEA + OFB")
                     {
-                        XTEA.OFB(FileToDecode[0], Path.Combine(DecodeOutput, Path.GetFileName(FileToDecode[0].Replace("enc - ", "dec - "))), keyByte, Encoding.ASCII.GetBytes("asdfasdf"));
+                        XTEA.OFB(FileToDecode[0], output, keyByte, Encoding.ASCII.GetBytes("asdfasdf"));
                     }
                     App.Current.Dispatcher.Invoke(() =>
                     {

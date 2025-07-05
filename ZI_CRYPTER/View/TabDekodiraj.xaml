@@ -7,7 +7,8 @@
              xmlns:vm="[vm ]clr-namespace:ZI_CRYPTER.ViewModel"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -65,10 +66,10 @@
 
         </Rectangle>
 
-        
 
 
-       
+
+
 
         <Rectangle Grid.Row="3"
                    Grid.Column="1"
@@ -78,11 +79,25 @@
                    RadiusX="10"
                    RadiusY="10" />
 
+        <TextBox x:Name="DecodeKeyTextBox"
+                 Grid.Row="10"
+                 Grid.Column="4"
+                 Grid.ColumnSpan="1"
+                 Margin="-15,-10,-30,20"
+                 Background="DarkOrange"
+                 BorderBrush="Transparent"
+                 BorderThickness="1"
+                 Foreground="White"
+                 Style="{StaticResource RoundedTextBox}"
+                 Text="{Binding DecodedFileName}"
+                 TextAlignment="Left"
+                 GotFocus="TextBox_GotFocus"
+                 LostFocus="TextBox_LostFocus"/>
 
         <Button Grid.Row="10"
                 Grid.Column="2"
-                Grid.ColumnSpan="3"
-                Margin="-15,-10,-30,20"
+                Grid.ColumnSpan="2"
+                Margin="-15,-10,20,20"
                 Background="DarkOrange"
                 BorderBrush="Transparent"
                 Command="{Binding ChooseOutputLocationCommand}">
@@ -309,6 +324,9 @@
                    TextAlignment="Center"
                    TextWrapping="Wrap" />
 
+
+
+
         <TextBox Grid.Row="7"
                  Grid.Column="3"
                  Grid.ColumnSpan="2"
@@ -318,7 +336,8 @@
                  Foreground="White"
                  Style="{StaticResource RoundedTextBox}"
                  Text="{Binding DecodeKey}"
-                 TextAlignment="Left" />
+                 TextAlignment="Left"
+                />
 
         <Button Grid.Row="11"
                 Grid.Column="4"

@@ -96,23 +96,24 @@ namespace ZI_CRYPTER.Utils
         public static void useA51(string inputFilePath, string outputFilePath, byte[] key)
         {
             ValidateKeyA51(key);
-
-            byte[] fileData = File.ReadAllBytes(inputFilePath);
-            byte[] newData = new byte[fileData.Length];
-
             InitializeRegistersWithKeyBytes(key);
 
-            for (int i = 0; i < fileData.Length; i++)
+
+            using (FileStream fsInput = new FileStream(inputFilePath, FileMode.Open, FileAccess.Read))
+            using (FileStream fsOutput = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
             {
-                byte keystreamByte = 0;
+                int byteRead;
+                while ((byteRead = fsInput.ReadByte()) != -1)
+                {
+                    byte keystreamByte = 0;
 
-                for (int bit = 0; bit < 8; bit++)
-                    keystreamByte |= (byte)(ClockForward() << bit);
+                    for (int bit = 0; bit < 8; bit++)
+                        keystreamByte |= (byte)(ClockForward() << bit);
 
-                newData[i] = (byte)(fileData[i] ^ keystreamByte);
+                    byte encryptedByte = (byte)(byteRead ^ keystreamByte);
+                    fsOutput.WriteByte(encryptedByte);
+                }
             }
-
-            File.WriteAllBytes(outputFilePath, newData);
         }
 
         public static void ValidateKeyA51(byte[] key)

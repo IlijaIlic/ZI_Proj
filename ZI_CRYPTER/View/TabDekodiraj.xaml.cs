@@ -24,5 +24,33 @@ namespace ZI_CRYPTER.View
         {
             InitializeComponent();
         }
+
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (DecodeKeyTextBox.Text == "Unesite novi naziv...")
+            {
+                DecodeKeyTextBox.Text = "";
+                DecodeKeyTextBox.Foreground = Brushes.White;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(DecodeKeyTextBox.Text))
+            {
+                DecodeKeyTextBox.Text = "Unesite novi naziv...";
+                DecodeKeyTextBox.Foreground = Brushes.LightGray;
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(DecodeKeyTextBox.Text))
+            {
+                DecodeKeyTextBox.Text = "Unesite novi naziv...";
+                DecodeKeyTextBox.Foreground = Brushes.LightGray;
+            }
+        }
     }
 }

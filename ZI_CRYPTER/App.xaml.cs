@@ -33,6 +33,7 @@ namespace ZI_CRYPTER
             ViewModelBaseInstance.SharedDecodeAlg = "undef";
             ViewModelBaseInstance.SharedDecodeKey = "";
             ViewModelBaseInstance.SharedFileToDecode = new ObservableCollection<string>();
+            ViewModelBaseInstance.SharedDecodedFileName = "";
 
             ViewModelBaseInstance.SharedSendIP1 = "";
             ViewModelBaseInstance.SharedSendIP2 = "";

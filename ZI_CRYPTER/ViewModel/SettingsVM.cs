@@ -47,6 +47,12 @@ namespace ZI_CRYPTER.ViewModel
             }
         }
 
+        public bool FSWCheck
+        {
+            get => _vmBase.SharedFSWChecked;
+
+        }
+
         public string CodeAlg
         {
             get => _vmBase.SharedCodeAlg;
@@ -69,17 +75,26 @@ namespace ZI_CRYPTER.ViewModel
 
         private void ChangeTargetLocation(object parameter)
         {
-            var folderDialog = new OpenFolderDialog
+            if (!FSWCheck)
             {
 
-            };
+                var folderDialog = new OpenFolderDialog
+                {
 
-            if (folderDialog.ShowDialog() == true)
+                };
+
+                if (folderDialog.ShowDialog() == true)
+                {
+                    var folderName = folderDialog.FolderName;
+                    _vmBase.SharedFSWPath = folderName;
+                    OnProprtyChanged(nameof(FSWPath));
+
+                }
+            }
+            else
             {
-                var folderName = folderDialog.FolderName;
-                _vmBase.SharedFSWPath = folderName;
-                OnProprtyChanged(nameof(FSWPath));
-
+                WindowInfoAlert wia = new WindowInfoAlert("Morate ugasiti FSW da bi se promenili Target folder!");
+                wia.ShowDialog();
             }
 
         }
