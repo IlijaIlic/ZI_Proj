@@ -24,5 +24,58 @@ namespace ZI_CRYPTER.View
         {
             InitializeComponent();
         }
+
+        private void CodeIVTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (CodeIVTextBox.Text == "IV")
+            {
+                CodeIVTextBox.Text = "";
+                CodeIVTextBox.Foreground = Brushes.White;
+            }
+        }
+
+        private void CodeIVTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(CodeIVTextBox.Text))
+            {
+                CodeIVTextBox.Text = "IV";
+                CodeIVTextBox.Foreground = Brushes.LightGray;
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(CodeIVTextBox.Text))
+            {
+                CodeIVTextBox.Text = "IV";
+                CodeIVTextBox.Foreground = Brushes.LightGray;
+            }
+
+            var selectedItem = CodeAlgComboBox.SelectedItem as ComboBoxItem;
+
+
+            if (selectedItem != null && selectedItem.Content.ToString() == "XTEA + OFB")
+            {
+                CodeIVTextBox.IsEnabled = true;
+            }
+            else
+            {
+                CodeIVTextBox.IsEnabled = false;
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = CodeAlgComboBox.SelectedItem as ComboBoxItem;
+
+            if (selectedItem != null && selectedItem.Content.ToString() == "XTEA + OFB")
+            {
+                CodeIVTextBox.IsEnabled = true;
+            }
+            else
+            {
+                CodeIVTextBox.IsEnabled = false;
+            }
+        }
     }
 }

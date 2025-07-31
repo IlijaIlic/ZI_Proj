@@ -50,7 +50,57 @@ namespace ZI_CRYPTER.View
             {
                 DecodeKeyTextBox.Text = "Unesite novi naziv...";
                 DecodeKeyTextBox.Foreground = Brushes.LightGray;
+
+                DecodeIVTextBox.Text = "IV";
+                DecodeIVTextBox.Foreground = Brushes.LightGray;
+
             }
+
+            var selectedItem = DecodeAlgComboBox.SelectedItem as ComboBoxItem;
+
+
+            if (selectedItem != null && selectedItem.Content.ToString() == "XTEA + OFB")
+            {
+                DecodeIVTextBox.IsEnabled = true;
+            }
+            else
+            {
+                DecodeIVTextBox.IsEnabled = false;
+            }
+        }
+
+        private void DecodeIVTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (DecodeIVTextBox.Text == "IV")
+            {
+                DecodeIVTextBox.Text = "";
+                DecodeIVTextBox.Foreground = Brushes.White;
+            }
+        }
+
+        private void DecodeIVTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+            if (string.IsNullOrWhiteSpace(DecodeIVTextBox.Text))
+            {
+                DecodeIVTextBox.Text = "IV";
+                DecodeIVTextBox.Foreground = Brushes.LightGray;
+            }
+        }
+
+        private void DecodeAlgComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = DecodeAlgComboBox.SelectedItem as ComboBoxItem;
+
+            if (selectedItem != null && selectedItem.Content.ToString() == "XTEA + OFB")
+            {
+                DecodeIVTextBox.IsEnabled = true;
+            }
+            else
+            {
+                DecodeIVTextBox.IsEnabled = false;
+            }
+
         }
     }
 }

@@ -6,7 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -247,7 +248,9 @@
             </Viewbox>
         </Button>
 
-        <ComboBox Grid.Row="2"
+        <ComboBox x:Name="CodeAlgComboBox"
+                  SelectionChanged="ComboBox_SelectionChanged"
+                  Grid.Row="2"
                   Grid.Column="4"
                   FontFamily="Franklin Gothic Heavy"
                   FontSize="16"
@@ -262,7 +265,8 @@
 
         <TextBox Grid.Row="4"
                  Grid.Column="3"
-                 Grid.ColumnSpan="2"
+                 Grid.ColumnSpan="1"
+                 Margin="0,0,-30,0"
                  Background="#FF2D2D2D"
                  BorderBrush="Orange"
                  BorderThickness="1"
@@ -270,6 +274,21 @@
                  Style="{StaticResource RoundedTextBox}"
                  Text="{Binding CodeKey}"
                  TextAlignment="Left" />
+
+        <TextBox x:Name="CodeIVTextBox"
+                 Grid.Row="4"
+                 Grid.Column="4"
+                 Grid.ColumnSpan="1"
+                 Margin="35,0,0,0"
+                 Background="#FF2D2D2D"
+                 BorderBrush="Orange"
+                 BorderThickness="1"
+                 Foreground="White"
+                 Style="{StaticResource RoundedTextBox}"
+                 Text="{Binding CodeIV}"
+                 TextAlignment="Left"
+                 GotFocus="CodeIVTextBox_GotFocus"
+                 LostFocus="CodeIVTextBox_LostFocus" />
 
 
     </Grid>

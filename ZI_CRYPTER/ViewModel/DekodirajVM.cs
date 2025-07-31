@@ -35,6 +35,16 @@ namespace ZI_CRYPTER.ViewModel
 
         }
 
+        public string DecodeIV
+        {
+            get => _vmBase.SharedDecodeIV;
+            set
+            {
+                _vmBase.SharedDecodeIV = value;
+                OnProprtyChanged(nameof(DecodeIV));
+            }
+        }
+
         public string DecodedFileName
         {
             get => _vmBase.SharedDecodedFileName;
@@ -135,6 +145,18 @@ namespace ZI_CRYPTER.ViewModel
 
                     return;
                 }
+                if(DecodeAlg == "XTEA + OFB" && (DecodeIV == "IV" || DecodeIV == ""))
+                {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        WindowInfoAlert wia3 = new WindowInfoAlert("Niste uneli IV za dekodiranje!");
+                        wia3.Owner = App.Current.MainWindow;
+
+                        wia3.ShowDialog();
+                    });
+
+                    return;
+                }
                 try
                 {
                     string output;
@@ -161,7 +183,7 @@ namespace ZI_CRYPTER.ViewModel
                     }
                     else if (DecodeAlg == "XTEA + OFB")
                     {
-                        XTEA.OFB(FileToDecode[0], output, keyByte, Encoding.ASCII.GetBytes("asdfasdf"));
+                        XTEA.OFB(FileToDecode[0], output, keyByte, Encoding.ASCII.GetBytes(DecodeIV));
                     }
                     App.Current.Dispatcher.Invoke(() =>
                     {

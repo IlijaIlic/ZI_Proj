@@ -96,6 +96,10 @@ namespace ZI_CRYPTER.ViewModel
 
         }
 
+        public string CodeIV
+        {
+            get => _vmBase.SharedCodeIV;
+        }
         public ObservableCollection<string> FilesToCode
         {
             get => _vmBase.SharedFilesToCode;
@@ -182,7 +186,8 @@ namespace ZI_CRYPTER.ViewModel
                 });
                 return false;
             }
-            else if (CodeKey == "")
+
+            if (CodeKey == "")
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
@@ -195,18 +200,21 @@ namespace ZI_CRYPTER.ViewModel
                 return false;
 
             }
-            //else if (FilesToCode.Count == 0)
-            //{
-            //    App.Current.Dispatcher.Invoke(() =>
-            //    {
-            //        WindowInfoAlert wia = new WindowInfoAlert("Nema fajlova za kodiranje!");
-            //        wia.Owner = App.Current.MainWindow;
 
-            //        wia.ShowDialog();
-            //        return false;
-            //    });
-            //}
-            else if (XPath == "")
+            if (CodeAlg == "XTEA + OFB" && (CodeIV == "IV" || CodeIV == ""))
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Morate uneti IV za kodiranje u postavkama!");
+                    wia.Owner = App.Current.MainWindow;
+
+                    wia.ShowDialog();
+
+                });
+                return false;
+            }
+            
+            if (XPath == "")
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
@@ -217,7 +225,8 @@ namespace ZI_CRYPTER.ViewModel
                 });
                 return false;
             }
-            else if (FSWCheck == true && FSWPath == "")
+            
+            if (FSWCheck == true && FSWPath == "")
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
@@ -248,7 +257,7 @@ namespace ZI_CRYPTER.ViewModel
             else if (CodeAlg == "XTEA + OFB")
             {
 
-                XTEA.OFB(filePath, Path.Combine(XPath, "enc - " + fileName), keyBytes, Encoding.ASCII.GetBytes("asdfasdf"));
+                XTEA.OFB(filePath, Path.Combine(XPath, "enc - " + fileName), keyBytes, Encoding.ASCII.GetBytes(CodeIV));
 
             }
         }
@@ -273,7 +282,7 @@ namespace ZI_CRYPTER.ViewModel
             {
                 foreach (var file in FilesToCode)
                 {
-                    XTEA.OFB(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes, Encoding.ASCII.GetBytes("asdfasdf"));
+                    XTEA.OFB(Path.GetFullPath(file), Path.Combine(XPath, "enc - " + Path.GetFileName(file)), keyBytes, Encoding.ASCII.GetBytes(CodeIV));
                 }
             }
         }

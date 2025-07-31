@@ -28,6 +28,16 @@ namespace ZI_CRYPTER.ViewModel
 
         }
 
+        public string CodeIV
+        {
+            get => _vmBase.SharedCodeIV;
+            set
+            {
+                _vmBase.SharedCodeIV = value;
+                OnProprtyChanged(nameof(CodeIV));
+            }
+        }
+
         public string XPath
         {
             get => _vmBase.SharedXPath;

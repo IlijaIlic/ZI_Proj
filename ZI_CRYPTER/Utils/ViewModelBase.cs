@@ -26,7 +26,29 @@ namespace ZI_CRYPTER.Utils
                 OnProprtyChanged(nameof(SharedXPath));
             }
         }
-       
+
+        private string _sharedCodeIV;
+        public string SharedCodeIV
+        {
+            get => _sharedCodeIV;
+            set
+            {
+                _sharedCodeIV = value;
+                OnProprtyChanged(nameof(SharedCodeIV));
+            }
+        }
+
+        private string _sharedDecodeIV;
+        public string SharedDecodeIV
+        {
+            get => _sharedDecodeIV;
+            set
+            {
+                _sharedDecodeIV = value;
+                OnProprtyChanged(nameof(SharedDecodeIV));
+            }
+        }
+
         // ReceiveVM
         private bool _sharedReceiveChecked;
         public bool SharedReceiveChecked

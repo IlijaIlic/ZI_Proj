@@ -16,9 +16,6 @@ namespace ZI_CRYPTER
 
         public static ViewModelBase ViewModelBaseInstance { get; private set; } = new ViewModelBase();
 
-        public static Dispatcher AppDispatcher { get; private set; }
-
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -28,12 +25,14 @@ namespace ZI_CRYPTER
             ViewModelBaseInstance.SharedWatcher = new FileSystemWatcher();
             ViewModelBaseInstance.SharedFilesToCode = new ObservableCollection<string>();
             ViewModelBaseInstance.SharedCodedFiles = new ObservableCollection<string>();
+            ViewModelBaseInstance.SharedCodeIV = "";
 
             ViewModelBaseInstance.SharedDecodeOutputPutanja = "C:\\Program Files\\";
             ViewModelBaseInstance.SharedDecodeAlg = "undef";
             ViewModelBaseInstance.SharedDecodeKey = "";
             ViewModelBaseInstance.SharedFileToDecode = new ObservableCollection<string>();
             ViewModelBaseInstance.SharedDecodedFileName = "";
+            ViewModelBaseInstance.SharedDecodeIV = "";
 
             ViewModelBaseInstance.SharedSendIP1 = "";
             ViewModelBaseInstance.SharedSendIP2 = "";
@@ -46,10 +45,6 @@ namespace ZI_CRYPTER
             ViewModelBaseInstance.SharedReceivePort = "";
             ViewModelBaseInstance.SharedInfoTextRec = "";
             ViewModelBaseInstance.SharedReceiveOutput = "C:\\Program Files\\";
-
-            AppDispatcher = Dispatcher.CurrentDispatcher;
-
         }
     }
-
 }

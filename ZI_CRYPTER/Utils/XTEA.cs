@@ -250,11 +250,19 @@ namespace ZI_CRYPTER.Utils
             }
         }
 
+        private static void ValidateIV(byte[] iv)
+        {
+            if (iv.Length != 8)
+            {
+                throw new ArgumentException("IV mora imati 64 bita.");
+            }
+        }
+
         public static void OFB(string inputFilePath, string outputFilePath, byte[] key, byte[] iv)
         {
             ValidateKey(key);
-            if (iv.Length != 8)
-                throw new ArgumentException("IV must be 8 bytes.");
+            ValidateIV(iv);
+            
 
             const int bufferSize = 64 * 1024; 
             byte[] buffer = new byte[bufferSize];
