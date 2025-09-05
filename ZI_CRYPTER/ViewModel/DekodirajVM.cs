@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ZI_CRYPTER.Model;
 using ZI_CRYPTER.Utils;
@@ -51,7 +52,7 @@ namespace ZI_CRYPTER.ViewModel
             set
             {
                 _vmBase.SharedDecodedFileName = value;
-                OnProprtyChanged(nameof(ViewModelBase));
+                OnProprtyChanged(nameof(DecodedFileName));
             }
         }
 
@@ -61,7 +62,7 @@ namespace ZI_CRYPTER.ViewModel
             set
             {
                 _vmBase.SharedDecodeOutputPutanja = value;
-                OnProprtyChanged(nameof(ViewModelBase));
+                OnProprtyChanged(nameof(DecodeOutput));
             }
         }
 
@@ -71,7 +72,7 @@ namespace ZI_CRYPTER.ViewModel
             set
             {
                 _vmBase.SharedDecodeKey = value;
-                OnProprtyChanged(nameof(ViewModelBase));
+                OnProprtyChanged(nameof(DecodeKey));
             }
         }
         public string DecodeAlg
@@ -80,7 +81,17 @@ namespace ZI_CRYPTER.ViewModel
             set
             {
                 _vmBase.SharedDecodeAlg = value;
-                OnProprtyChanged(nameof(ViewModelBase));
+                OnProprtyChanged(nameof(DecodeAlg));
+            }
+        }
+
+        public Visibility DecodeLoading
+        {
+            get => _vmBase.SharedDecodeLoading;
+            set
+            {
+                _vmBase.SharedDecodeLoading = value;
+                OnProprtyChanged(nameof(DecodeLoading));
             }
         }
 
@@ -159,6 +170,11 @@ namespace ZI_CRYPTER.ViewModel
                 }
                 try
                 {
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        DecodeLoading = Visibility.Visible;
+                    });
+
                     string output;
                     byte[] keyByte = Encoding.ASCII.GetBytes(DecodeKey);
 
@@ -217,7 +233,17 @@ namespace ZI_CRYPTER.ViewModel
                         });
 
                     }
+
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        DecodeLoading = Visibility.Hidden;
+                    });
                 }
+
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    DecodeLoading = Visibility.Hidden;
+                });
             });
 
         }

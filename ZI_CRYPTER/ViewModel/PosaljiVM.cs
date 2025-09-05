@@ -13,6 +13,7 @@ using System.Windows.Input;
 using ZI_CRYPTER.Model;
 using ZI_CRYPTER.Utils;
 using Cryptography;
+using System.Windows;
 
 namespace ZI_CRYPTER.ViewModel
 {
@@ -33,6 +34,15 @@ namespace ZI_CRYPTER.ViewModel
             PosaljiCommand = new RelayCommand(async (param) => await Posalji(param));
         }
 
+        public Visibility SendLoading
+        {
+            get => _vmBase.SharedSendLoading;
+            set
+            {
+                _vmBase.SharedSendLoading = value;
+                OnProprtyChanged(nameof(SendLoading));
+            }
+        }
         public string SendIP1
         {
             get => _vmBase.SharedSendIP1;
@@ -112,6 +122,12 @@ namespace ZI_CRYPTER.ViewModel
             {
                 try
                 {
+
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        SendLoading = Visibility.Visible;
+                    });
+
                     using (Socket clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
                     {
                         string ip = String.Concat(SendIP1, ".", SendIP2, ".", SendIP3, ".", SendIP4);
@@ -126,14 +142,12 @@ namespace ZI_CRYPTER.ViewModel
                             long fileSize = new FileInfo(filePath).Length;
                             byte[] hash = BLAKE.ComputeHash(filePath);
 
-                            // Слање метаподатака (име фајла и величина) треба и хеш
 
                             writer.Write(fileName);
                             writer.Write(fileSize);
                             writer.Write(hash.Length);
                             writer.Write(hash);
 
-                            // Слање фајла у блоковима
                             using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                             {
                                 byte[] buffer = new byte[4096];
@@ -145,7 +159,6 @@ namespace ZI_CRYPTER.ViewModel
                                 }
                             }
 
-                            // Примање потврде са сервера
 
                             string response = await Task.Run(() => reader.ReadString());
                             Console.WriteLine("response");
@@ -163,7 +176,17 @@ namespace ZI_CRYPTER.ViewModel
                 {
                     InfoText = $"Error: {ex.Message}";
                     OnProprtyChanged(nameof(InfoText));
+
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        SendLoading = Visibility.Hidden;
+                    });
                 }
+
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    SendLoading = Visibility.Hidden;
+                });
             });
 
         }

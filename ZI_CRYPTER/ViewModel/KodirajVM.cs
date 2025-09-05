@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using ZI_CRYPTER.Model;
@@ -96,6 +97,16 @@ namespace ZI_CRYPTER.ViewModel
 
         }
 
+        public Visibility CodeLoading
+        {
+            get => _vmBase.SharedCodeLoading;
+            set
+            {
+                _vmBase.SharedCodeLoading = value;
+                OnProprtyChanged();
+            }
+        }
+
         public string CodeIV
         {
             get => _vmBase.SharedCodeIV;
@@ -118,6 +129,11 @@ namespace ZI_CRYPTER.ViewModel
             {
                 if (Checker())
                 {
+
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        CodeLoading = Visibility.Visible;
+                    });
 
                     byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
                     try
@@ -156,17 +172,27 @@ namespace ZI_CRYPTER.ViewModel
 
                                 wia.ShowDialog();
                             });
+
                         }
                         else
                         {
-                            App.Current.Dispatcher.Invoke(() =>
+                            App.Current.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 WindowInfoAlert wia = new WindowInfoAlert(ex.Message);
                                 wia.Owner = App.Current.MainWindow;
 
                                 wia.ShowDialog();
-                            });
+                            }));
+
                         }
+                            return;
+
+                    }
+                    finally{
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            CodeLoading = Visibility.Hidden;
+                        });
 
                     }
                 }
@@ -176,6 +202,16 @@ namespace ZI_CRYPTER.ViewModel
 
         private bool Checker()
         {
+            if (!FSWCheck && FilesToCode.Count == 0)
+            {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    WindowInfoAlert wia = new WindowInfoAlert("Nema fajla za kodiranje!");
+                    wia.Owner = App.Current.MainWindow;
+                    wia.ShowDialog();
+                });
+                return false;
+            }
             if (CodeAlg == "undef")
             {
                 App.Current.Dispatcher.Invoke(() =>
@@ -201,7 +237,7 @@ namespace ZI_CRYPTER.ViewModel
 
             }
 
-            if (CodeAlg == "XTEA + OFB" && (CodeIV == "IV" || CodeIV == ""))
+            if (CodeAlg == "XTEA + OFB"  && (CodeIV == "IV" || CodeIV == ""))
             {
                 App.Current.Dispatcher.Invoke(() =>
                 {
@@ -342,6 +378,7 @@ namespace ZI_CRYPTER.ViewModel
         {
             if (parameter is bool isChecked)
             {
+                CodeLoading = Visibility.Visible;
                 try
                 {
                     if (isChecked)
@@ -392,6 +429,11 @@ namespace ZI_CRYPTER.ViewModel
                     OnProprtyChanged();
 
                 }
+                finally
+                {
+                    CodeLoading = Visibility.Hidden;
+
+                }
             }
         }
 
@@ -399,37 +441,56 @@ namespace ZI_CRYPTER.ViewModel
         {
             while (FilesToCode.ToList().Count > 0)
             {
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    CodeLoading = Visibility.Visible;
+                });
                 foreach (var file in FilesToCode.ToList())
                 {
                     try
                     {
+                        App.Current.Dispatcher.Invoke(() =>
+                        {
+                            CodeLoading = Visibility.Visible;
+                        });
+
                         FilesToCode.Remove(file);
                         string name = Path.GetFileName(file);
                         FSWKodiranje(keyBytes, file, name);
                         App.Current.Dispatcher.Invoke(() =>
                         {
                             CodedFiles.Add(name);
+                            CodeLoading = Visibility.Hidden;
                         });
                     }
                     catch (Exception exce)
                     {
-                        if (exce is not UnauthorizedAccessException)
+                        if (exce is UnauthorizedAccessException)
+                        {
+                            
+                            FilesToCode.Add(file);
+                        }
+                        else if (exce is IOException ioEx && (ioEx.HResult & 0xFFFF) == 32)
+                        {
+                            FilesToCode.Add(file);
+                        }
+                        else
                         {
                             App.Current.Dispatcher.Invoke(() =>
                             {
                                 WindowInfoAlert wia = new WindowInfoAlert(exce.Message);
                                 wia.Owner = App.Current.MainWindow;
                                 wia.ShowDialog();
+                                CodeLoading = Visibility.Hidden;
                             });
-                            FilesToCode.Add(file);
-                        }
-                        else
-                        {
-                            FilesToCode.Remove(file);
                         }
                     }
                 }
             }
+            App.Current.Dispatcher.Invoke(() =>
+            {
+                CodeLoading = Visibility.Hidden;
+            });
         }
         private void InitializeFiles()
         {
@@ -444,7 +505,10 @@ namespace ZI_CRYPTER.ViewModel
         {
             Task.Factory.StartNew(() =>
             {
-                App.Current.Dispatcher.Invoke(() => FilesToCode.Add(Path.GetFileName(e.FullPath)));
+                App.Current.Dispatcher.Invoke(() => {
+                    FilesToCode.Add(Path.GetFileName(e.FullPath));
+                    CodeLoading = Visibility.Visible;
+                });
 
                 byte[] keyBytes = Encoding.ASCII.GetBytes(CodeKey);
 
@@ -464,6 +528,12 @@ namespace ZI_CRYPTER.ViewModel
                 {
                     if (exce is UnauthorizedAccessException)
                     {
+                        FilesToCode.Add(e.FullPath);
+                        codeSlowFiles(keyBytes);
+                    }
+                    else if (exce is IOException ioEx && (ioEx.HResult & 0xFFFF) == 32)
+                    {
+                        // file is in use by another process
                         FilesToCode.Add(e.FullPath);
                         codeSlowFiles(keyBytes);
                     }

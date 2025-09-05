@@ -8,13 +8,23 @@ using System.Runtime.CompilerServices;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Security.AccessControl;
+using System.Windows;
 
 namespace ZI_CRYPTER.Utils
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
 
-
+        private string _sharedReceiveIV;
+        public string SharedReceiveIV
+        {
+            get => _sharedReceiveIV;
+            set
+            {
+                _sharedReceiveIV = value;
+                OnProprtyChanged(nameof(SharedReceiveIV));
+            }
+        }
         // SettingsVM
         private string _sharedXPath = "";
         public string SharedXPath
@@ -360,6 +370,52 @@ namespace ZI_CRYPTER.Utils
                 OnProprtyChanged(nameof(SharedDecodeAlg));
             }
         }
+
+        // DekodirajVM
+        private Visibility _decodeLoading;
+        public Visibility SharedDecodeLoading
+        {
+            get => _decodeLoading;
+            set
+            {
+                _decodeLoading = value;
+                OnProprtyChanged(nameof(SharedDecodeLoading));
+            }
+        }
+
+        private Visibility _codeLoading;
+        public Visibility SharedCodeLoading
+        {
+            get => _codeLoading;
+            set
+            {
+                _codeLoading = value;
+                OnProprtyChanged(nameof(SharedCodeLoading));
+            }
+        }
+
+        private Visibility _sendLoading;
+        public Visibility SharedSendLoading
+        {
+            get => _sendLoading;
+            set
+            {
+                _sendLoading = value;
+                OnProprtyChanged(nameof(SharedSendLoading));
+            }
+        }
+
+        private Visibility _receiveLoading;
+        public Visibility SharedReceiveLoading
+        {
+            get => _receiveLoading;
+            set
+            {
+                _receiveLoading = value;
+                OnProprtyChanged(nameof(SharedReceiveLoading));
+            }
+        }
+
 
         // DekodirajVM
         private string _decodedFileName;

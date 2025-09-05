@@ -24,5 +24,37 @@ namespace ZI_CRYPTER.View
         {
             InitializeComponent();
         }
+
+       
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedItem = ReceiveCMBox.SelectedItem as ComboBoxItem;
+
+            if (selectedItem != null && selectedItem.Content.ToString() == "XTEA + OFB")
+            {
+                ReceiveIVTextBox.IsEnabled = true;
+            }
+            else
+            {
+                ReceiveIVTextBox.IsEnabled = false;
+            }
+
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+           
+            var selectedItem = ReceiveCMBox.SelectedItem as ComboBoxItem;
+
+
+            if (selectedItem != null && selectedItem.Content.ToString() == "XTEA + OFB")
+            {
+                ReceiveIVTextBox.IsEnabled = true;
+            }
+            else
+            {
+                ReceiveIVTextBox.IsEnabled = false;
+            }
+        }
     }
 }

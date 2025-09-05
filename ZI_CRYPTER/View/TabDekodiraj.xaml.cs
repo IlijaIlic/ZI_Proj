@@ -50,10 +50,6 @@ namespace ZI_CRYPTER.View
             {
                 DecodeKeyTextBox.Text = "Unesite novi naziv...";
                 DecodeKeyTextBox.Foreground = Brushes.LightGray;
-
-                DecodeIVTextBox.Text = "IV";
-                DecodeIVTextBox.Foreground = Brushes.LightGray;
-
             }
 
             var selectedItem = DecodeAlgComboBox.SelectedItem as ComboBoxItem;
@@ -69,24 +65,7 @@ namespace ZI_CRYPTER.View
             }
         }
 
-        private void DecodeIVTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (DecodeIVTextBox.Text == "IV")
-            {
-                DecodeIVTextBox.Text = "";
-                DecodeIVTextBox.Foreground = Brushes.White;
-            }
-        }
-
-        private void DecodeIVTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-
-            if (string.IsNullOrWhiteSpace(DecodeIVTextBox.Text))
-            {
-                DecodeIVTextBox.Text = "IV";
-                DecodeIVTextBox.Foreground = Brushes.LightGray;
-            }
-        }
+       
 
         private void DecodeAlgComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

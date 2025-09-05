@@ -7,7 +7,8 @@
              xmlns:vm="[vm ]clr-namespace:ZI_CRYPTER.ViewModel"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             xmlns:controls="clr-namespace:ZI_CRYPTER.Styles">
 
 
 
@@ -59,6 +60,10 @@
             </Rectangle.Fill>
 
         </Rectangle>
+
+        <controls:Loading Grid.Column="4"
+                          Margin="-75,5,75,0"
+                          Visibility="{Binding CodeLoading}" />
 
         <TextBlock Grid.Row="2"
                    Grid.Column="1"

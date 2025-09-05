@@ -5,6 +5,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using ZI_CRYPTER.Model;
 using ZI_CRYPTER.Utils;
@@ -30,6 +31,24 @@ namespace ZI_CRYPTER.ViewModel
             ChangeReceiveLocationCommand = new RelayCommand(ChangeReceiveLocation);
         }
 
+        public string ReceiveIV
+        {
+            get => _vmBase.SharedReceiveIV;
+            set
+            {
+                _vmBase.SharedReceiveIV = value;
+                OnProprtyChanged(nameof(SharedReceiveIV));
+            }
+        }
+        public Visibility ReceiveLoading
+        {
+            get => _vmBase.SharedReceiveLoading;
+            set
+            {
+                _vmBase.SharedReceiveLoading = value;
+                OnProprtyChanged(nameof(ReceiveLoading));
+            }
+        }
         public string ReceivePort
         {
             get => _vmBase.SharedReceivePort;
@@ -109,6 +128,12 @@ namespace ZI_CRYPTER.ViewModel
 
                 try
                 {
+
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ReceiveLoading = Visibility.Visible;
+                    });
+
                     serverSocket.Bind(new IPEndPoint(IPAddress.Any, Int32.Parse(ReceivePort)));
                     serverSocket.Listen(5);
                     InfoTextRec = "Server je spreman i osluskuje konekcije!";
@@ -119,7 +144,7 @@ namespace ZI_CRYPTER.ViewModel
                     while (true)
                     {
                         Socket clientSocket = await serverSocket.AcceptAsync();
-                        Task.Run(() => HandleClientAsyncAdvance(clientSocket));
+                        await Task.Run(() => HandleClientAsyncAdvance(clientSocket));
                     }
                 }
                 catch (Exception ex)
@@ -132,6 +157,10 @@ namespace ZI_CRYPTER.ViewModel
                 finally
                 {
                     serverSocket.Close();
+                    App.Current.Dispatcher.Invoke(() =>
+                    {
+                        ReceiveLoading = Visibility.Hidden;
+                    });
                 }
             }
             else
@@ -230,7 +259,7 @@ namespace ZI_CRYPTER.ViewModel
                     }
                     else if (ReceiveAlg == "XTEA + OFB" && ReceiveKey != "")
                     {
-                        XTEA.OFB((Path.Combine(ReceiveOutput, "Primljeno - kodirano - " + fileName)), Path.Combine(ReceiveOutput, "Primljeno - dekodirano - " + fileName), keyByte, Encoding.ASCII.GetBytes("asdfasdf"));
+                        XTEA.OFB((Path.Combine(ReceiveOutput, "Primljeno - kodirano - " + fileName)), Path.Combine(ReceiveOutput, "Primljeno - dekodirano - " + fileName), keyByte, Encoding.ASCII.GetBytes(ReceiveIV));
                     }
 
                 }

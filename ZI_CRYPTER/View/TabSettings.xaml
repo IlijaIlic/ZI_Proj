@@ -138,7 +138,7 @@
                    FontFamily="Franklin Gothic Heavy"
                    FontSize="15"
                    Foreground="White"
-                   Text="Izaberite Target putanju:"
+                   Text="Izaberite Target folder:"
                    TextAlignment="Center"
                    TextWrapping="Wrap" />
 
@@ -151,7 +151,7 @@
                    FontFamily="Franklin Gothic Heavy"
                    FontSize="15"
                    Foreground="White"
-                   Text="Izaberite X putanju:"
+                   Text="Izaberite X folder:"
                    TextAlignment="Center"
                    TextWrapping="Wrap" />
 
@@ -286,9 +286,7 @@
                  Foreground="White"
                  Style="{StaticResource RoundedTextBox}"
                  Text="{Binding CodeIV}"
-                 TextAlignment="Left"
-                 GotFocus="CodeIVTextBox_GotFocus"
-                 LostFocus="CodeIVTextBox_LostFocus" />
+                 TextAlignment="Left"/>
 
 
     </Grid>

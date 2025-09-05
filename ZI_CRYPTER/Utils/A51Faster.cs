@@ -9,11 +9,10 @@ namespace ZI_CRYPTER.Utils
 {
     public static class A51Faster
     {
-
-        // Registers as bitfields (stored in lower bits of uints)
-        public static uint R1; // 19-bit (bits 0-18)
-        public static uint R2; // 22-bit (bits 0-21)
-        public static uint R3; // 23-bit (bits 0-22)
+        // prelazak sa array-a na jedan uint za svaki od registra nad kojima se vrse bit operacije
+        public static uint R1; // 19-bit (bitovi 0-18)
+        public static uint R2; // 22-bit (bitovi 0-21)
+        public static uint R3; // 23-bit (bitovi 0-22)
 
         public static int warmUpRounds = 100;
 
@@ -46,23 +45,23 @@ namespace ZI_CRYPTER.Utils
                 ClockForward();
         }
 
-        // Shifting via bitwise operations
+    
         public static void ClockR1(uint newBit)
         {
-            R1 = ((R1 << 1) | newBit) & 0x7FFFF; // 19 bits mask
+            R1 = ((R1 << 1) | newBit) & 0x7FFFF; // maska za 19 bita
         }
 
         public static void ClockR2(uint newBit)
         {
-            R2 = ((R2 << 1) | newBit) & 0x3FFFFF; // 22 bits mask
+            R2 = ((R2 << 1) | newBit) & 0x3FFFFF; //maska za 22 bita
         }
 
         public static void ClockR3(uint newBit)
         {
-            R3 = ((R3 << 1) | newBit) & 0x7FFFFF; // 23 bits mask
+            R3 = ((R3 << 1) | newBit) & 0x7FFFFF; //maska za 23 bita
         }
 
-        // Tap positions for feedback
+       
         public static uint ProduceFirstBitR1() =>
             ((R1 >> 13) ^ (R1 >> 16) ^ (R1 >> 17) ^ (R1 >> 18)) & 1;
 
@@ -72,7 +71,7 @@ namespace ZI_CRYPTER.Utils
         public static uint ProduceFirstBitR3() =>
             ((R3 >> 7) ^ (R3 >> 20) ^ (R3 >> 21) ^ (R3 >> 22)) & 1;
 
-        // Majority function bit
+ 
         public static uint ClockForward()
         {
             uint maj = Majority((R1 >> 8) & 1, (R2 >> 10) & 1, (R3 >> 10) & 1);
@@ -118,7 +117,7 @@ namespace ZI_CRYPTER.Utils
 
         public static void ValidateKeyA51(byte[] key)
         {
-            if (key.Length > 8)
+            if (key.Length != 8)
                 throw new Exception("Kljuc mora imati 64 bita.");
         }
     }

@@ -6,7 +6,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             Loaded="UserControl_Loaded"
+             xmlns:controls="clr-namespace:ZI_CRYPTER.Styles">
+
 
 
     <UserControl.Resources>
@@ -67,6 +70,9 @@
 
         </Rectangle>
 
+        <controls:Loading Grid.Column="4"
+                          Margin="-75,5,75,0"
+                          Visibility="{Binding ReceiveLoading}" />
 
         <TextBlock Grid.RowSpan="2"
                    Grid.Column="2"
@@ -174,11 +180,11 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             CornerRadius="10">
-                       <ContentPresenter Content="{TemplateBinding Content}"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  RecognizesAccessKey="True"
-                  TextBlock.Foreground="{TemplateBinding Foreground}" />
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          RecognizesAccessKey="True"
+                                          TextBlock.Foreground="{TemplateBinding Foreground}" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked"
@@ -230,11 +236,13 @@
                    TextAlignment="Center"
                    TextWrapping="Wrap" />
 
-        <ComboBox Grid.Row="4"
+        <ComboBox x:Name="ReceiveCMBox"
+                  Grid.Row="4"
                   Grid.Column="4"
                   FontFamily="Franklin Gothic Heavy"
                   FontSize="16"
                   Foreground="White"
+                  SelectionChanged="ComboBox_SelectionChanged"
                   SelectedValue="{Binding ReceiveAlg, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   SelectedValuePath="Content">
             <ComboBoxItem Content="A5/1" />
@@ -264,17 +272,31 @@
                    TextWrapping="Wrap"
                    TextAlignment="Center"
                    Margin="0,15,0,-15"
-                   FontSize="15"/>
+                   FontSize="15" />
 
         <TextBox Grid.Row="6"
                  Grid.Column="3"
-                 Grid.ColumnSpan="2"
+                 Grid.ColumnSpan="1"
+                 Background="#FF2D2D2D"
+                 BorderBrush="Orange"
+                 BorderThickness="1"
+                 Foreground="White"
+                 Margin="0,0,-30,0"
+                 Style="{StaticResource RoundedTextBox}"
+                 Text="{Binding ReceiveKey}"
+                 TextAlignment="Left" />
+
+        <TextBox x:Name="ReceiveIVTextBox"
+                 Grid.Row="6"
+                 Grid.Column="4"
+                 Grid.ColumnSpan="1"
+                 Margin="35,0,0,0"
                  Background="#FF2D2D2D"
                  BorderBrush="Orange"
                  BorderThickness="1"
                  Foreground="White"
                  Style="{StaticResource RoundedTextBox}"
-                 Text="{Binding ReceiveKey}"
+                 Text="{Binding ReceiveIV}"
                  TextAlignment="Left" />
 
     </Grid>

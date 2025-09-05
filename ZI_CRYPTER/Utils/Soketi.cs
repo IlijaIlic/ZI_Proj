@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace ZI_CRYPTER.Utils
 {
+    // NE KORISTI SE 
     public static class Soketi
     {
-
 
         public static async Task AdvanceKlijent(string ipAdresa, string port, string putanja, string InfoText)
         {
@@ -31,11 +31,9 @@ namespace ZI_CRYPTER.Utils
                         string fileName = Path.GetFileName(filePath);
                         long fileSize = new FileInfo(filePath).Length;
 
-                        // Слање метаподатака (име фајла и величина)
                         writer.Write(fileName);
                         writer.Write(fileSize);
 
-                        // Слање фајла у блоковима
                         using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                         {
                             byte[] buffer = new byte[4096];
@@ -47,10 +45,9 @@ namespace ZI_CRYPTER.Utils
                             }
                         }
 
-                        // Примање потврде са сервера
                         string response = reader.ReadString();
                         InfoText = $"Server response: {response}";
-                        
+
 
 
                     }
@@ -139,6 +136,6 @@ namespace ZI_CRYPTER.Utils
         }
 
 
-       
+
     }
 }

@@ -5,6 +5,7 @@
         xmlns:local="clr-namespace:ZI_CRYPTER"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ZI_CRYPTER.ViewModel"
+        xmlns:controls="clr-namespace:ZI_CRYPTER.Styles"
         Title="CRYPTER"
         Width="1200"
         Height="675"
@@ -18,7 +19,8 @@
     <Window.DataContext>
         <vm:NavigationVM />
     </Window.DataContext>
-
+    
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

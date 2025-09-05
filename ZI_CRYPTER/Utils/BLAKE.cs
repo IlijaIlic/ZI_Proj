@@ -6,14 +6,12 @@ namespace Cryptography
 {
     public class BLAKE
     {
-        // Initialization Vector (IV) for BLAKE-256 (from fractional parts of sqrt of primes)
         private static readonly uint[] IV = new uint[]
         {
             0x6A09E667, 0xBB67AE85, 0x3C6EF372, 0xA54FF53A,
             0x510E527F, 0x9B05688C, 0x1F83D9AB, 0x5BE0CD19
         };
 
-        // Constants from the fractional part of pi
         private static readonly uint[] Constants = new uint[]
         {
             0x243F6A88, 0x85A308D3, 0x13198A2E, 0x03707344,
@@ -22,7 +20,6 @@ namespace Cryptography
             0xC0AC29B7, 0xC97C50DD, 0x3F84D5B5, 0xB5470917
         };
 
-        // Sigma permutation table
         private static readonly byte[,] Sigma = new byte[10, 16]
         {
             {  0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15 },
@@ -37,13 +34,11 @@ namespace Cryptography
             { 10, 2, 8, 4, 7, 6, 1, 5,15,11, 9,14, 3,12,13, 0 }
         };
 
-        // Rotate right
         private static uint RotR(uint x, int n)
         {
             return (x >> n) | (x << (32 - n));
         }
 
-        // Compression function for 512-bit block
         private static void Compress(ref uint[] h, byte[] block, ulong messageBitLength, uint[] salt = null)
         {
             uint[] m = new uint[16];
@@ -54,7 +49,6 @@ namespace Cryptography
             Array.Copy(h, v, 8);
             Array.Copy(IV, 0, v, 8, 8);
 
-            // XOR salt into v[8..11] if supplied
             if (salt != null)
             {
                 v[8] ^= salt[0];
@@ -63,7 +57,6 @@ namespace Cryptography
                 v[11] ^= salt[3];
             }
 
-            // XOR message bit length into v[12], v[13]
             v[12] ^= (uint)(messageBitLength & 0xFFFFFFFF);
             v[13] ^= (uint)(messageBitLength >> 32);
 
@@ -81,7 +74,6 @@ namespace Cryptography
                 h[i] ^= v[i] ^ v[i + 8];
         }
 
-        // G function: the core mixing operation
         private static void G(ref uint[] v, int i, uint m_j, uint m_k)
         {
             int a, b, c, d;
@@ -111,7 +103,6 @@ namespace Cryptography
             v[b] = RotR(v[b] ^ v[c], 7);
         }
 
-        // Hash function entry point
         public static byte[] ComputeHash(string inputFilePath, uint[] salt = null)
         {
             byte[] input = File.ReadAllBytes(inputFilePath);
@@ -124,13 +115,11 @@ namespace Cryptography
             byte[] padded = new byte[blockCount * 64];
             Array.Copy(input, padded, input.Length);
 
-            // Append padding: 0x80, then zero bytes, then length
             padded[input.Length] = 0x80;
 
             byte[] lengthBytes = BitConverter.GetBytes(messageBitLength);
             Array.Copy(lengthBytes, 0, padded, padded.Length - 8, 8);
 
-            // Process blocks
             for (int i = 0; i < blockCount; i++)
             {
                 byte[] block = new byte[64];
@@ -138,7 +127,6 @@ namespace Cryptography
                 Compress(ref h, block, messageBitLength, salt);
             }
 
-            // Final digest
             byte[] digest = new byte[32];
             for (int i = 0; i < 8; i++)
                 Array.Copy(BitConverter.GetBytes(h[i]), 0, digest, i * 4, 4);
@@ -146,14 +134,5 @@ namespace Cryptography
             return digest;
         }
 
-        // Helper to get hex string
-        //public static string HashToHexString(string message)
-        //{
-        //    byte[] hash = ComputeHash(Encoding.UTF8.GetBytes(message));
-        //    StringBuilder sb = new StringBuilder();
-        //    foreach (byte b in hash)
-        //        sb.Append(b.ToString("x2"));
-        //    return sb.ToString();
-        //}
     }
 }

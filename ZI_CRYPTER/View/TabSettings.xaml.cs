@@ -25,32 +25,10 @@ namespace ZI_CRYPTER.View
             InitializeComponent();
         }
 
-        private void CodeIVTextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (CodeIVTextBox.Text == "IV")
-            {
-                CodeIVTextBox.Text = "";
-                CodeIVTextBox.Foreground = Brushes.White;
-            }
-        }
-
-        private void CodeIVTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(CodeIVTextBox.Text))
-            {
-                CodeIVTextBox.Text = "IV";
-                CodeIVTextBox.Foreground = Brushes.LightGray;
-            }
-        }
+      
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(CodeIVTextBox.Text))
-            {
-                CodeIVTextBox.Text = "IV";
-                CodeIVTextBox.Foreground = Brushes.LightGray;
-            }
-
             var selectedItem = CodeAlgComboBox.SelectedItem as ComboBoxItem;
 
 
